@@ -11,7 +11,7 @@ void on_trackbar( int, void* )
 int main(int argc, char* argv[])
 {
       int height,width,step,channels;  //parameters of the image we are working on
-      int i,j,k,t1min=0,t1max=0,t2min=0,t2max=0,t3min=0,t3max=0; // other variables used
+      int i,j,k,t1min=0,t1max=0,t2min=0,t2max=0,t3min=80,t3max=100; // other variables used
       
      
       CvMat* threshold_matrix  = cvCreateMat(2,3,CV_32FC1);
@@ -42,23 +42,7 @@ int main(int argc, char* argv[])
     cvNamedWindow( "Camera", CV_WINDOW_AUTOSIZE );
     //cvNamedWindow( "EdgeDetection", CV_WINDOW_AUTOSIZE );
     
-    /// Create Trackbars
-     char TrackbarName1[50]="t1min";
-     char TrackbarName2[50]="t1max";
-     char TrackbarName3[50]="t2min";
-     char TrackbarName4[50]="t2max";
-     char TrackbarName5[50]="t3min";
-     char TrackbarName6[50]="t3max";
- 
-      cvCreateTrackbar( TrackbarName1, "F1", &t1min, 260 , NULL );
-      cvCreateTrackbar( TrackbarName2, "F1", &t1max, 260,  NULL  );
-      
-      cvCreateTrackbar( TrackbarName3, "F2", &t2min, 260 , NULL );
-      cvCreateTrackbar( TrackbarName4, "F2", &t2max, 260,  NULL  );
-      
-      cvCreateTrackbar( TrackbarName5, "F3", &t3min, 260 , NULL );
-      cvCreateTrackbar( TrackbarName6, "F3", &t3max, 260,  NULL  );
- 
+    
    // Load threshold from the slider bars in these 2 parameters
     CvScalar hsv_min = cvScalar(t1min, t2min, t3min, 0);
     CvScalar hsv_max = cvScalar(t1max, t2max ,t3max, 0);
@@ -102,6 +86,7 @@ int main(int argc, char* argv[])
         // Filter out colors which are out of range.
         cvInRangeS(hsv_frame, hsv_min, hsv_max, thresholded);
         
+		/*
 		// the below lines of code is for visual purpose only remove after calibration 
         //--------------FROM HERE-----------------------------------
         //Split image into its 3 one dimensional images
@@ -113,7 +98,7 @@ int main(int argc, char* argv[])
         cvInRangeS(thresholded3,cvScalar(t3min,0,0,0) ,cvScalar(t3max,0,0,0) ,thresholded3);
         
         //-------------REMOVE OR COMMENT AFTER CALIBRATION TILL HERE ------------------
-    
+    */
         // Memory for hough circles
         CvMemStorage* storage = cvCreateMemStorage(0);
         
@@ -140,7 +125,8 @@ int main(int argc, char* argv[])
          only show frame to keep the screen clean  */  
            
          cvShowImage( "Camera", frame ); // Original stream with detected ball overlay
-        
+        cvShowImage( "HSV", hsv_frame); // Original stream in the HSV color space
+         cvShowImage( "After Color Filtering", thresholded ); // The stream after color filtering
         //cvShowImage( "filtered", thresholded );
         
       
