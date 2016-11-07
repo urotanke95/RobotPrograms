@@ -102,6 +102,7 @@ int main(int argc, char* argv[])
         // Filter out colors which are out of range.
         cvInRangeS(hsv_frame, hsv_min, hsv_max, thresholded);
         
+        
         // the below lines of code is for visual purpose only remove after calibration 
         //--------------FROM HERE-----------------------------------
         //Split image into its 3 one dimensional images
@@ -113,7 +114,6 @@ int main(int argc, char* argv[])
         cvInRangeS(thresholded3,cvScalar(t3min,0,0,0) ,cvScalar(t3max,0,0,0) ,thresholded3);
         
         //-------------REMOVE OR COMMENT AFTER CALIBRATION TILL HERE ------------------
-    
     
         // Memory for hough circles
         CvMemStorage* storage = cvCreateMemStorage(0);
