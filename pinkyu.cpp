@@ -1,169 +1,181 @@
-#include<opencv/cv.h>
-#include<opencv/cxcore.h>
-#include<opencv/cvaux.h>
-#include<opencv/highgui.h>
+#include <stdio.h>
+#include <math.h>
+#include <deque>
+#include "opencv/cv.h"
+#include "opencv/highgui.h"
+#include "opencv/cxcore.h"
+
+using namespace std;
+
+CvSeq* getCirclesInImage(IplImage*, CvMemStorage*, IplImage*);
+float eucdist(CvPoint, CvPoint);
+void drawCircleAndLabel(IplImage*, float*, const char*);
+bool circlesBeHomies(float*, float*);
+
+const int MIN_IDENT = 50;
+const int MAX_RAD_DIFF = 10;
+const int HISTORY_SIZE = 5;
+const int X_THRESH = 15;
+const int Y_THRESH = 15;
+const int R_THRESH = 20;
+const int MATCHES_THRESH = 3;
+const int HUE_BINS = 32;
 
 int main(int argc, char *argv[]) {
+  CvCapture *capture = 0; //The camera
+  IplImage* frame = 0; //The images you bring out of the camera
 
-    CvCapture *capture = cvCaptureFromAVI(argv[1]);
-    int frames = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_COUNT);
+  //Open the camera
+  capture = cvCaptureFromCAM( 0 );
+  if (!capture ) {
+    printf("Could not connect to camera\n" );
+    return 1;
+  }
 
-    uchar *routdata, *goutdata, *target;
+  frame = cvQueryFrame( capture );
+  //Create two output windows
+  cvNamedWindow( "raw_video", CV_WINDOW_AUTOSIZE );
+  cvNamedWindow( "processed_video", CV_WINDOW_AUTOSIZE );
 
-    
-    //Create a window
-    cvNamedWindow("Image", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Final_RG", CV_WINDOW_AUTOSIZE);    
-    cvNamedWindow("Filtered_RG", CV_WINDOW_AUTOSIZE);    
+  //Used as storage element for Hough circles
+  CvMemStorage* storage = cvCreateMemStorage(0);
 
+  // Grayscale image
+  IplImage* grayscaleImg = cvCreateImage(cvSize(640, 480), 8/*depth*/, 1/*channels*/);
 
-    //Create Image Skeletons
-    IplImage *image = 0;
-    IplImage *routput = cvCreateImage( cvSize(640,480), 8, 3);
-    IplImage *goutput = cvCreateImage( cvSize(640,480), 8, 3);
-    IplImage *final_rg = cvCreateImage( cvSize(640,480), 8, 3);
-    IplImage *filtered_rg = cvCreateImage( cvSize(640,480), 8, 3);
+  CvPoint track1 = {-1, -1};
+  CvPoint track2 = {-1, -1};
+  float rad1 = -1;
+  float rad2 = -1;
+  deque<CvSeq*> samples;
+  int key = 0;
+  while(key != 27 /*escape key to quit*/ ) {
+    //Query for the next frame
+    frame = cvQueryFrame( capture );
+    if( !frame ) break;
 
+    deque<CvSeq*> stableCircles;
+    //show the raw image in one of the windows
+    cvShowImage( "raw_video", frame );
+    CvSeq* circles = getCirclesInImage(frame, storage, grayscaleImg);
 
-    int nFrames = 300;
-    int j, k, m, n, p;
-
-
-
-    // These are used for storing pixel indices 
-    int rindex[500][2];
-    int gindex[500][2];
-
-
-    // Threshold for R, G, B channels. This depend on the object to be tracked.
-    // These are for a pink object.
-    int red = 255;//200;
-    int blue = 255;//210;
-    int green = 255;//190;
-
-    
-    // Video run starts here ...
-
-    for(j = 0; j < nFrames; j++)
-    {                 
-        image = cvQueryFrame(capture);
-
-        //This is needed for accessing pixel elements
-        int step = image->widthStep/sizeof(uchar);
-
-        
-        cvCopy(image, routput, NULL);
-        cvCopy(image, goutput, NULL);
-
-
-        //Otherwise the image appears inverted
-        routput->origin = image->origin;
-        goutput->origin = image->origin;
-        final_rg->origin = image->origin;
-        filtered_rg->origin = image->origin;
-
-
-
-        routdata = (uchar *) routput->imageData;
-        goutdata = (uchar *) goutput->imageData;
-
-        k = 0, p = 0;
-        for( m = 0; m < image->height; m++) //row
-        {
-            for( n = 0; n < image->width; n++) //column
-            {
-
-                
-                // only show those pixels with RG component specified below
-                if(routdata[m*step+n*3+2] > red && routdata[m*step+n*3+0] > blue)
-                {
-                    rindex[k][0] = m;
-                    rindex[k][1] = n; // save the pixel indices in a vector for later use.
-                    k = k + 1;
-                }
-                else
-                {
-                    //black out this pixel
-                    routdata[m*step+n*3+0] = 0; //clear blue part
-                    routdata[m*step+n*3+1] = 0; //clear green part
-                    routdata[m*step+n*3+2] = 0; //clear red part
-                }
-
-
-                // Only show pixels with RB component as specified below
-                if(routdata[m*step+n*3+2] > red && routdata[m*step+n*3+1] < blue)
-                {
-                    gindex[p][0] = m;
-                    gindex[p][1] = n; // save the pixel indices in a vector for later use.
-                    p = p + 1;       
-                }
-                else
-                {
-                    //black out this pixel
-                    goutdata[m*step+n*3+0] = 0; //clear blue part
-                    goutdata[m*step+n*3+1] = 0; //clear green part
-                    goutdata[m*step+n*3+2] = 0; //clear red part
-                }
-
-            }
-        } 
-
-
-        // Perform 'AND' Operation between routput and goutput images
-        cvAnd( routput, goutput, final_rg, NULL);
-
-
-        //Apply an averaging filter to remove noise from final_rg image
-        cvSmooth(final_rg, filtered_rg, CV_MEDIAN, 5, 5, 0, 0);
-
-        target = (uchar *) filtered_rg->imageData;
-        
-
-        int xmin = 400, xmax = 0;
-        int ymin = 400, ymax = 0;
-
-        for(m = 0; m < filtered_rg->height; m++)
-        {
-            for(n = 0; n < filtered_rg->width; n++)
-            {
-
-                if(target[m*step+n*3+2] > 100)
-                {
-                    if(n < xmin)
-                        xmin = n;
-                    if(n > xmax)
-                        xmax = n;
-                    if(m < ymin)
-                        ymin = m;
-                    if(m > ymax)
-                        ymax = m;
-                }
-            }
+    //Iterate through the list of circles found by cvHoughCircles()
+    for(int i = 0; i < circles->total; i++ ) {
+      int matches = 0;
+      float* p = (float*)cvGetSeqElem( circles, i );
+      float x = p[0];
+      float y = p[1];
+      float r = p[2];
+      if (x-r < 0 || y-r < 0 || x+r >= frame->width || y+r >= frame->height) {
+        continue;
+      }
+      for (int j = 0; j < samples.size(); j++) {
+        CvSeq* oldSample = samples[j];
+        for (int k = 0; k < oldSample->total; k++) {
+          float* p2 = (float*)cvGetSeqElem( oldSample, k );
+          if (circlesBeHomies(p, p2)) {
+            matches++;
+            break;
+          }
         }
-               
-        cvRectangle(image, cvPoint(xmin, ymin), cvPoint(xmax,ymax), CV_RGB(0,255,0),2, 8, 0);
-        cvCircle(image, cvPoint((xmin+xmax)/2, (ymin+ymax)/2), 0, CV_RGB(255,0,0),2, 8, 0);
-                        
+      }
+      if (matches > MATCHES_THRESH) {
+        cvSetImageROI(frame, cvRect(x-r, y-r, 2*r, 2*r));
+        IplImage* copy = cvCreateImage(cvSize(2*r, 2*r), frame->depth, 3);
+        cvCvtColor(frame, copy, CV_BGR2HSV);
+        IplImage* hue = cvCreateImage(cvGetSize(copy), copy->depth, 1);
+        cvCvtPixToPlane(copy, hue, 0, 0, 0);
+        int hsize[] = {HUE_BINS};
+        float hrange[] = {0,180};
+        float* range[] = {hrange};
+        IplImage* hueArray[] = {hue};
+        int channel[] = {0};
+        CvHistogram* hist = cvCreateHist(1, hsize, CV_HIST_ARRAY, range, 1);
+        cvCalcHist(hueArray, hist, 0, 0);
+        cvNormalizeHist(hist, 1.0);
+        int highestBinSeen = -1;
+        float maxVal = -1;
+        for (int b=0; b<HUE_BINS; b++) {
+          float binVal = cvQueryHistValue_1D(hist, b);
+          if (binVal > maxVal) {
+            maxVal = binVal;
+            highestBinSeen = b;
+          }
+        }
+        cvResetImageROI(frame);
+        const char *color;
+        switch(highestBinSeen) {
+        case 2: case 3: case 4:
+          color = "orange";
+          break;
+        case 5: case 6: case 7: case 8:
+          color = "yellow";
+          break;
+        case 9: case 10: case 11: case 12:
+        case 13: case 14: case 15: case 16:
+          color = "green";
+          break;
+        case 17: case 18: case 19: case 20:
+        case 21: case 22: case 23:
+          color = "blue";
+          break;
+        case 24: case 25: case 26: case 27:
+        case 28:
+          color = "purple";
+          break;
+        default:
+          color = "red";
+        }
+        char label[64];
+        sprintf(label, "color: %s", color);
+        drawCircleAndLabel(frame, p, label);
+      }
+    }
+    samples.push_back(circles);
+    if (samples.size() > HISTORY_SIZE) {
+      samples.pop_front();
+    }
+    cvShowImage( "processed_video", frame);
 
+    //Get the last key that's been pressed for input
+    key = cvWaitKey( 1 );
+  }
+}
 
+CvSeq* getCirclesInImage(IplImage* frame, CvMemStorage* storage, IplImage* grayscaleImg) {
+  // houghification
+  // Convert to a single-channel, grayspace image
+  cvCvtColor(frame, grayscaleImg, CV_BGR2GRAY);
 
-        // Show all the images
-        cvShowImage("Image", image);
-        cvShowImage( "Final_RG", final_rg);
-        cvShowImage ( "Filtered_RG", filtered_rg);       
-                    
-                
-        //wait for a key to press.
-        cvWaitKey(0);
-    } //for each frame ...
+  // Gaussian filter for less noise
+  cvSmooth(grayscaleImg, grayscaleImg, CV_GAUSSIAN, 7, 9 );
 
+  //Detect the circles in the image
+  CvSeq* circles = cvHoughCircles(grayscaleImg,
+      storage,
+      CV_HOUGH_GRADIENT,
+      2,
+      grayscaleImg->height/4,
+      200,
+      100 );
+  return circles;
+}
 
-    cvReleaseCapture(&capture);
-//    cvReleaseImage(&image);   // it gives error ... find out why?
-    cvDestroyWindow("Image");
-    cvDestroyWindow("Final_RG");
-    cvDestroyWindow("Filtered_RG");
+float eucdist(CvPoint c1, CvPoint c2) {
+  float d = sqrt(pow((float)c1.x - c2.x, 2) + pow((float)c1.y - c2.y, 2));
+  return d;
+}
 
-    return 0;
+void drawCircleAndLabel(IplImage* frame, float* p, const char* label) {
+  //Draw the circle on the original image
+  //There's lots of drawing commands you can use!
+  CvFont font;
+  cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 1, 1, 0.0, 1, 8);
+  cvCircle( frame, cvPoint(cvRound(p[0]),cvRound(p[1])), cvRound(p[2]), CV_RGB(255,0,0), 3, 8, 0 );
+  cvPutText( frame, label, cvPoint(cvRound(p[0]),cvRound(p[1])), &font, CV_RGB(255,0,0) );
+}
 
+bool circlesBeHomies(float* c1, float* c2) {
+  return (abs(c1[0]-c2[0]) < X_THRESH) && (abs(c1[1]-c2[1]) < Y_THRESH) &&
+      (abs(c1[2]-c2[2]) < R_THRESH);
 }
