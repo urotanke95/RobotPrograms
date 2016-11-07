@@ -40,10 +40,6 @@ int main(int argc, char* argv[])
     
     // Create a window in which the captured images will be presented
     cvNamedWindow( "Camera", CV_WINDOW_AUTOSIZE );
-    cvNamedWindow( "HSV", CV_WINDOW_AUTOSIZE );
-    cvNamedWindow( "F1", CV_WINDOW_AUTOSIZE );
-    cvNamedWindow( "F2", CV_WINDOW_AUTOSIZE );
-    cvNamedWindow( "F3", CV_WINDOW_AUTOSIZE );
     //cvNamedWindow( "EdgeDetection", CV_WINDOW_AUTOSIZE );
     
     /// Create Trackbars
@@ -145,11 +141,6 @@ int main(int argc, char* argv[])
          only show frame to keep the screen clean  */  
            
          cvShowImage( "Camera", frame ); // Original stream with detected ball overlay
-         cvShowImage( "HSV", hsv_frame); // Original stream in the HSV color space
-         cvShowImage( "After Color Filtering", thresholded ); // The stream after color filtering
-         cvShowImage( "F1", thresholded1 ); // individual filters
-         cvShowImage( "F2", thresholded2 );
-         cvShowImage( "F3", thresholded3 );
         
         //cvShowImage( "filtered", thresholded );
         
