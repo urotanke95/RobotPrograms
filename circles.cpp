@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 		// (3)ハフ変換による円の検出と検出した円の描画
 		
 		circles = cvHoughCircles (gray_img, storage, CV_HOUGH_GRADIENT,
-				1, 100, 20, 50, 10, MAX (gray_img->width, gray_img->height));
+				2, 20, 81, 29, 10, 13);
 
 		for (i = 0; i < circles->total; i++) {
 			p = (float *) cvGetSeqElem (circles, i);
