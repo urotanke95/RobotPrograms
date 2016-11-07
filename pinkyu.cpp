@@ -1,181 +1,176 @@
-#include <stdio.h>
-#include <math.h>
-#include <deque>
-#include "opencv/cv.h"
-#include "opencv/highgui.h"
-#include "opencv/cxcore.h"
+#include <cv.h> 
+#include <highgui.h>
+#include <cxcore.h>
 
-using namespace std;
+ 
+//callback for trackbar. nothing to be done here     
+void on_trackbar( int, void* )
+{
+}
 
-CvSeq* getCirclesInImage(IplImage*, CvMemStorage*, IplImage*);
-float eucdist(CvPoint, CvPoint);
-void drawCircleAndLabel(IplImage*, float*, const char*);
-bool circlesBeHomies(float*, float*);
-
-const int MIN_IDENT = 50;
-const int MAX_RAD_DIFF = 10;
-const int HISTORY_SIZE = 5;
-const int X_THRESH = 15;
-const int Y_THRESH = 15;
-const int R_THRESH = 20;
-const int MATCHES_THRESH = 3;
-const int HUE_BINS = 32;
-
-int main(int argc, char *argv[]) {
-  CvCapture *capture = 0; //The camera
-  IplImage* frame = 0; //The images you bring out of the camera
-
-  //Open the camera
-  capture = cvCaptureFromCAM( 0 );
-  if (!capture ) {
-    printf("Could not connect to camera\n" );
-    return 1;
-  }
-
-  frame = cvQueryFrame( capture );
-  //Create two output windows
-  cvNamedWindow( "raw_video", CV_WINDOW_AUTOSIZE );
-  cvNamedWindow( "processed_video", CV_WINDOW_AUTOSIZE );
-
-  //Used as storage element for Hough circles
-  CvMemStorage* storage = cvCreateMemStorage(0);
-
-  // Grayscale image
-  IplImage* grayscaleImg = cvCreateImage(cvSize(640, 480), 8/*depth*/, 1/*channels*/);
-
-  CvPoint track1 = {-1, -1};
-  CvPoint track2 = {-1, -1};
-  float rad1 = -1;
-  float rad2 = -1;
-  deque<CvSeq*> samples;
-  int key = 0;
-  while(key != 27 /*escape key to quit*/ ) {
-    //Query for the next frame
-    frame = cvQueryFrame( capture );
-    if( !frame ) break;
-
-    deque<CvSeq*> stableCircles;
-    //show the raw image in one of the windows
-    cvShowImage( "raw_video", frame );
-    CvSeq* circles = getCirclesInImage(frame, storage, grayscaleImg);
-
-    //Iterate through the list of circles found by cvHoughCircles()
-    for(int i = 0; i < circles->total; i++ ) {
-      int matches = 0;
-      float* p = (float*)cvGetSeqElem( circles, i );
-      float x = p[0];
-      float y = p[1];
-      float r = p[2];
-      if (x-r < 0 || y-r < 0 || x+r >= frame->width || y+r >= frame->height) {
-        continue;
-      }
-      for (int j = 0; j < samples.size(); j++) {
-        CvSeq* oldSample = samples[j];
-        for (int k = 0; k < oldSample->total; k++) {
-          float* p2 = (float*)cvGetSeqElem( oldSample, k );
-          if (circlesBeHomies(p, p2)) {
-            matches++;
-            break;
-          }
-        }
-      }
-      if (matches > MATCHES_THRESH) {
-        cvSetImageROI(frame, cvRect(x-r, y-r, 2*r, 2*r));
-        IplImage* copy = cvCreateImage(cvSize(2*r, 2*r), frame->depth, 3);
-        cvCvtColor(frame, copy, CV_BGR2HSV);
-        IplImage* hue = cvCreateImage(cvGetSize(copy), copy->depth, 1);
-        cvCvtPixToPlane(copy, hue, 0, 0, 0);
-        int hsize[] = {HUE_BINS};
-        float hrange[] = {0,180};
-        float* range[] = {hrange};
-        IplImage* hueArray[] = {hue};
-        int channel[] = {0};
-        CvHistogram* hist = cvCreateHist(1, hsize, CV_HIST_ARRAY, range, 1);
-        cvCalcHist(hueArray, hist, 0, 0);
-        cvNormalizeHist(hist, 1.0);
-        int highestBinSeen = -1;
-        float maxVal = -1;
-        for (int b=0; b<HUE_BINS; b++) {
-          float binVal = cvQueryHistValue_1D(hist, b);
-          if (binVal > maxVal) {
-            maxVal = binVal;
-            highestBinSeen = b;
-          }
-        }
-        cvResetImageROI(frame);
-        const char *color;
-        switch(highestBinSeen) {
-        case 2: case 3: case 4:
-          color = "orange";
-          break;
-        case 5: case 6: case 7: case 8:
-          color = "yellow";
-          break;
-        case 9: case 10: case 11: case 12:
-        case 13: case 14: case 15: case 16:
-          color = "green";
-          break;
-        case 17: case 18: case 19: case 20:
-        case 21: case 22: case 23:
-          color = "blue";
-          break;
-        case 24: case 25: case 26: case 27:
-        case 28:
-          color = "purple";
-          break;
-        default:
-          color = "red";
-        }
-        char label[64];
-        sprintf(label, "color: %s", color);
-        drawCircleAndLabel(frame, p, label);
-      }
+int main(int argc, char* argv[])
+{
+      int height,width,step,channels;  //parameters of the image we are working on
+      int i,j,k,t1min=0,t1max=0,t2min=0,t2max=0,t3min=0,t3max=0; // other variables used
+      
+     
+      CvMat* threshold_matrix  = cvCreateMat(2,3,CV_32FC1);
+      
+      CvFileStorage* temp = cvOpenFileStorage("threshold_matrix.xml",NULL,CV_STORAGE_READ);
+    
+    // Load the previous values of the threshold if they exist
+    if(temp)
+    {
+        threshold_matrix = (CvMat*)cvLoad("threshold_matrix.xml");
+        t1min =(int) CV_MAT_ELEM(*threshold_matrix,float,0,0) ;t2min =(int) CV_MAT_ELEM(*threshold_matrix,float,0,1) ;t3min =(int) CV_MAT_ELEM(*threshold_matrix,float,0,2);
+        t1max =(int) CV_MAT_ELEM(*threshold_matrix,float,1,0) ;t2max =(int) CV_MAT_ELEM(*threshold_matrix,float,1,1) ;t3max =(int) CV_MAT_ELEM(*threshold_matrix,float,1,2) ;
     }
-    samples.push_back(circles);
-    if (samples.size() > HISTORY_SIZE) {
-      samples.pop_front();
+ 
+    // Open capture device. 0 is /dev/video0, 1 is /dev/video1, etc.
+    CvCapture* capture = cvCaptureFromCAM( 0 );
+    
+    if( !capture )
+    {
+            fprintf( stderr, "ERROR: capture is NULL \n" );
+            getchar();
+            return -1;
     }
-    cvShowImage( "processed_video", frame);
-
-    //Get the last key that's been pressed for input
-    key = cvWaitKey( 1 );
-  }
-}
-
-CvSeq* getCirclesInImage(IplImage* frame, CvMemStorage* storage, IplImage* grayscaleImg) {
-  // houghification
-  // Convert to a single-channel, grayspace image
-  cvCvtColor(frame, grayscaleImg, CV_BGR2GRAY);
-
-  // Gaussian filter for less noise
-  cvSmooth(grayscaleImg, grayscaleImg, CV_GAUSSIAN, 7, 9 );
-
-  //Detect the circles in the image
-  CvSeq* circles = cvHoughCircles(grayscaleImg,
-      storage,
-      CV_HOUGH_GRADIENT,
-      2,
-      grayscaleImg->height/4,
-      200,
-      100 );
-  return circles;
-}
-
-float eucdist(CvPoint c1, CvPoint c2) {
-  float d = sqrt(pow((float)c1.x - c2.x, 2) + pow((float)c1.y - c2.y, 2));
-  return d;
-}
-
-void drawCircleAndLabel(IplImage* frame, float* p, const char* label) {
-  //Draw the circle on the original image
-  //There's lots of drawing commands you can use!
-  CvFont font;
-  cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 1, 1, 0.0, 1, 8);
-  cvCircle( frame, cvPoint(cvRound(p[0]),cvRound(p[1])), cvRound(p[2]), CV_RGB(255,0,0), 3, 8, 0 );
-  cvPutText( frame, label, cvPoint(cvRound(p[0]),cvRound(p[1])), &font, CV_RGB(255,0,0) );
-}
-
-bool circlesBeHomies(float* c1, float* c2) {
-  return (abs(c1[0]-c2[0]) < X_THRESH) && (abs(c1[1]-c2[1]) < Y_THRESH) &&
-      (abs(c1[2]-c2[2]) < R_THRESH);
-}
+    // grab an image from the capture
+    IplImage* frame = cvQueryFrame( capture );
+    
+    // Create a window in which the captured images will be presented
+    cvNamedWindow( "Camera", CV_WINDOW_AUTOSIZE );
+    cvNamedWindow( "HSV", CV_WINDOW_AUTOSIZE );
+    cvNamedWindow( "F1", CV_WINDOW_AUTOSIZE );
+    cvNamedWindow( "F2", CV_WINDOW_AUTOSIZE );
+    cvNamedWindow( "F3", CV_WINDOW_AUTOSIZE );
+    //cvNamedWindow( "EdgeDetection", CV_WINDOW_AUTOSIZE );
+    
+    /// Create Trackbars
+     char TrackbarName1[50]="t1min";
+     char TrackbarName2[50]="t1max";
+     char TrackbarName3[50]="t2min";
+     char TrackbarName4[50]="t2max";
+     char TrackbarName5[50]="t3min";
+     char TrackbarName6[50]="t3max";
+ 
+      cvCreateTrackbar( TrackbarName1, "F1", &t1min, 260 , NULL );
+      cvCreateTrackbar( TrackbarName2, "F1", &t1max, 260,  NULL  );
+      
+      cvCreateTrackbar( TrackbarName3, "F2", &t2min, 260 , NULL );
+      cvCreateTrackbar( TrackbarName4, "F2", &t2max, 260,  NULL  );
+      
+      cvCreateTrackbar( TrackbarName5, "F3", &t3min, 260 , NULL );
+      cvCreateTrackbar( TrackbarName6, "F3", &t3max, 260,  NULL  );
+ 
+   // Load threshold from the slider bars in these 2 parameters
+    CvScalar hsv_min = cvScalar(t1min, t2min, t3min, 0);
+    CvScalar hsv_max = cvScalar(t1max, t2max ,t3max, 0);
+    
+    // get the image data
+      height    = frame->height;
+      width     = frame->width;
+      step      = frame->widthStep;
+      
+     // capture size - 
+    CvSize size = cvSize(width,height);
+    
+    // Initialize different images that are going to be used in the program
+    IplImage*  hsv_frame    = cvCreateImage(size, IPL_DEPTH_8U, 3); // image converted to HSV plane
+    IplImage*  thresholded   = cvCreateImage(size, IPL_DEPTH_8U, 1); // final thresholded image
+    IplImage*  thresholded1   = cvCreateImage(size, IPL_DEPTH_8U, 1); // Component image threshold
+    IplImage*  thresholded2   = cvCreateImage(size, IPL_DEPTH_8U, 1);
+    IplImage*  thresholded3   = cvCreateImage(size, IPL_DEPTH_8U, 1);
+    IplImage*  filtered   = cvCreateImage(size, IPL_DEPTH_8U, 1);  //smoothed image
+    
+  
+    while( 1 )
+    {   
+        // Load threshold from the slider bars in these 2 parameters
+       hsv_min = cvScalar(t1min, t2min, t3min, 0);
+       hsv_max = cvScalar(t1max, t2max ,t3max, 0);
+    
+        // Get one frame
+        frame = cvQueryFrame( capture );
+        
+        if( !frame )
+        {
+                fprintf( stderr, "ERROR: frame is null...\n" );
+                getchar();
+                break;
+        }
+ 
+        // Covert color space to HSV as it is much easier to filter colors in the HSV color-space.
+        cvCvtColor(frame, hsv_frame, CV_BGR2HSV);
+        
+        // Filter out colors which are out of range.
+        cvInRangeS(hsv_frame, hsv_min, hsv_max, thresholded);
+        
+        // the below lines of code is for visual purpose only remove after calibration 
+        //--------------FROM HERE-----------------------------------
+        //Split image into its 3 one dimensional images
+        cvSplit( hsv_frame,thresholded1, thresholded2, thresholded3, NULL );
+       
+        // Filter out colors which are out of range.
+        cvInRangeS(thresholded1,cvScalar(t1min,0,0,0) ,cvScalar(t1max,0,0,0) ,thresholded1);
+        cvInRangeS(thresholded2,cvScalar(t2min,0,0,0) ,cvScalar(t2max,0,0,0) ,thresholded2);
+        cvInRangeS(thresholded3,cvScalar(t3min,0,0,0) ,cvScalar(t3max,0,0,0) ,thresholded3);
+        
+        //-------------REMOVE OR COMMENT AFTER CALIBRATION TILL HERE ------------------
+    
+    
+        // Memory for hough circles
+        CvMemStorage* storage = cvCreateMemStorage(0);
+        
+        // hough detector works better with some smoothing of the image
+        cvSmooth( thresholded, thresholded, CV_GAUSSIAN, 9, 9 );
+        
+        //hough transform to detect circle
+        CvSeq* circles = cvHoughCircles(thresholded, storage, CV_HOUGH_GRADIENT, 2,
+                                        thresholded->height/4, 100, 50, 10, 400);
+ 
+        for (int i = 0; i < circles->total; i++)
+        {   //get the parameters of circles detected
+            float* p = (float*)cvGetSeqElem( circles, i );
+            printf("Ball! x=%f y=%f r=%f\n\r",p[0],p[1],p[2] );
+           
+            // draw a circle with the centre and the radius obtained from the hough transform
+            cvCircle( frame, cvPoint(cvRound(p[0]),cvRound(p[1])),  //plot centre
+                                    2, CV_RGB(255,255,255),-1, 8, 0 );
+            cvCircle( frame, cvPoint(cvRound(p[0]),cvRound(p[1])),  //plot circle
+                                    cvRound(p[2]), CV_RGB(0,255,0), 2, 8, 0 );
+        }
+           
+         /* for testing purpose you can show all the images but when done with calibration 
+         only show frame to keep the screen clean  */  
+           
+         cvShowImage( "Camera", frame ); // Original stream with detected ball overlay
+         cvShowImage( "HSV", hsv_frame); // Original stream in the HSV color space
+         cvShowImage( "After Color Filtering", thresholded ); // The stream after color filtering
+         cvShowImage( "F1", thresholded1 ); // individual filters
+         cvShowImage( "F2", thresholded2 );
+         cvShowImage( "F3", thresholded3 );
+        
+        //cvShowImage( "filtered", thresholded );
+        
+      
+ 
+        cvReleaseMemStorage(&storage);
+ 
+      
+        //If ESC key pressed, Key=0x10001B under OpenCV 0.9.7(linux version),
+        //remove higher bits using AND operator
+        if( (cvWaitKey(10) & 255) == 27 ) break;
+    }
+     
+     //Save the threshold values before exiting
+     *((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 0, 0 ) ) = t1min ;*((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 0, 1 ) ) = t2min ;*((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 0, 2 ) ) = t3min ;
+     *((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 1, 0 ) ) = t1max ;*((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 1, 1 ) ) = t2max ;*((float*)CV_MAT_ELEM_PTR( *threshold_matrix, 1, 2 ) ) = t3max ;
+     cvSave("threshold_matrix.xml",threshold_matrix);
+     
+     
+     // Release the capture device housekeeping
+     cvReleaseCapture( &capture );
+     cvDestroyWindow( "mywindow" );
+     return 0;
+   }
