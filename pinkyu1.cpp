@@ -24,8 +24,8 @@
 using namespace std;
 
 // >>>>> Color to be tracked
-#define MIN_H_BLUE 200
-#define MAX_H_BLUE 300
+#define MIN_H_BLUE 30
+#define MAX_H_BLUE 70
 // <<<<< Color to be tracked
 
 
