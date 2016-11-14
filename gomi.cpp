@@ -24,7 +24,7 @@
 using namespace std;
 
 // >>>>> Color to be tracked
-#define MIN_H_BLUE 180
+#define MIN_H_BLUE 200
 #define MAX_H_BLUE 270
 // <<<<< Color to be tracked
 
@@ -193,11 +193,8 @@ int main()
             bBox = cv::boundingRect(contours[i]);
 
             float ratio = (float) bBox.width / (float) bBox.height;
-            if (ratio > 1.0f)
-                ratio = 1.0f / ratio;
-
             // Searching for a bBox almost square
-            if (ratio > 0.75 && bBox.area() >= 400)
+            if (ratio > 2.0 && bBox.area() >= 400)
             {
                 balls.push_back(contours[i]);
                 ballsBox.push_back(bBox);
