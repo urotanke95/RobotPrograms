@@ -220,7 +220,7 @@ int main()
             cv::putText(res, sstr.str(),
                         cv::Point(center.x + 3, center.y - 3),
                         cv::FONT_HERSHEY_SIMPLEX, 0.5, CV_RGB(20,150,20), 2);
-			printf("%d, %d", center.x, center.y);
+		  cout << center.x << ", " << center.y << endl;
         }
         // <<<<< Detection result
 
