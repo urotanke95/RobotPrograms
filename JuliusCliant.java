@@ -23,7 +23,7 @@ class JuliusCliant{
 
             while(i < 10){
                 sb = new StringBuilder();
-                sb.append("<?xml version=\"1.0\" encoding=\"Shift-JIS\"?>");
+                sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                 while(true){
                     if((s = reader.readLine()) != null){
                         if(s.toString().equals(".")){
