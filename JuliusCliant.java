@@ -18,72 +18,62 @@ class JuliusCliant{
             String s;
             StringBuilder sb;
 
-            int i = 0;
 
 
-            while(i < 10){
+            while(true){
                 sb = new StringBuilder();
                 sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
                 while(true){
-                    if((s = reader.readLine()) != null){
-                        if(s.toString().equals(".")){
-                            String data = sb.toString().replaceAll("<s>", "[s]").replaceAll("</s>", "[/s]");
-                            //System.out.println(data);
+                    if((s = reader.readLine()) == null) continue;
+                    if(s.toString().equals(".")){
+                        String data = sb.toString().replaceAll("<s>", "[s]").replaceAll("</s>", "[/s]");
+                        //System.out.println(data);
 
-                            InputStream stream = new ByteArrayInputStream(data.getBytes());
+                        InputStream stream = new ByteArrayInputStream(data.getBytes());
 
-                            Node root = builder.parse(stream);
-                            Node first = root.getFirstChild();
+                        Node root = builder.parse(stream);
+                        Node first = root.getFirstChild();
 
-                            if(first.getNodeName().equals("RECOGOUT")){
-                                NodeList nL = first.getChildNodes();
-                                for(int j = 0; j < nL.getLength(); j++){
-                                    Node n = nL.item(j);
-                                    if(n.getNodeName().equals("SHYPO")){
+                        if(first.getNodeName().equals("RECOGOUT")){
+                            NodeList nL = first.getChildNodes();
+                            for(int j = 0; j < nL.getLength(); j++){
+                                Node n = nL.item(j);
+                                if(n.getNodeName().equals("SHYPO")){
 
-                                        StringBuilder sbWord = new StringBuilder();
-                                        float cm = 0;
-                                        int num = 0;
+                                    StringBuilder sbWord = new StringBuilder();
+                                    float cm = 0;
+                                    int num = 0;
 
-                                        NodeList wL = n.getChildNodes();
-                                        for(int k = 0; k < wL.getLength(); k++){
-                                            Node w = wL.item(k);
-                                            if(w.getNodeName().equals("WHYPO")){
+                                    NodeList wL = n.getChildNodes();
+                                    for(int k = 0; k < wL.getLength(); k++){
+                                        Node w = wL.item(k);
+                                        if(w.getNodeName().equals("WHYPO")){
 
-                                                Element el = (Element)w;
+                                            Element el = (Element)w;
+                                            if(el.getAttribute("WORD").equals("。")) continue;
+                                            if(el.getAttribute("WORD").equals("")) continue;
+                                            System.out.println("WORD:" + el.getAttribute("WORD") +" CLASSID: " + el.getAttribute("CLASSID") + " CM:"+el.getAttribute("CM"));
 
-                                                if(!el.getAttribute("WORD").equals("。") && !el.getAttribute("WORD").equals("")){
-                                                    System.out.println(el.getAttribute("WORD")+":"+el.getAttribute("CM"));
-
-                                                    sbWord.append(el.getAttribute("WORD"));
-                                                    cm += Float.parseFloat(el.getAttribute("CM"));
-                                                    num++;
-                                                }
-
-                                                //System.out.println(el.getAttribute("WORD"));
-                                            }
-
+                                            sbWord.append(el.getAttribute("WORD"));
+                                            cm += Float.parseFloat(el.getAttribute("CM"));
+                                            num++;
                                         }
-                                        System.out.println("WORDS:"+num);
-                                        System.out.println(sbWord+":"+cm/num);
 
                                     }
+                                    System.out.println("WORDS:"+num);
+                                    System.out.println(sbWord+":"+cm/num);
+
                                 }
                             }
-                            System.out.println(first.getNodeName());
-
-                            break;
-
                         }
-                        sb.append(s);
+                        System.out.println(first.getNodeName());
+
+                        break;
 
                     }
+                    sb.append(s);
                 }
-
-                //System.out.println(i+":------------------------------\n");
                 System.out.println("\n");
-                //i++;
-
             }
 
             output.print("DIE");
