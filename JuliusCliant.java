@@ -2,9 +2,14 @@ import java.io.*;
 import java.net.*;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
+import java.util.*;
 
 class JuliusCliant{
-    public static void main(String args[]){
+    private ICore core_;
+    public JuliusCliant(ICore core){
+        core_ = core;
+    }
+    public void Run(){
         try{
             Socket client = new Socket("localhost", 10500);
             InputStream input = new DataInputStream(client.getInputStream());
@@ -45,23 +50,25 @@ class JuliusCliant{
                                     int num = 0;
 
                                     NodeList wL = n.getChildNodes();
+                                    List<JuliusWord> jwl = new ArrayList<JuliusWord>();
+
                                     for(int k = 0; k < wL.getLength(); k++){
                                         Node w = wL.item(k);
                                         if(w.getNodeName().equals("WHYPO")){
-
                                             Element el = (Element)w;
                                             if(el.getAttribute("WORD").equals("。")) continue;
                                             if(el.getAttribute("WORD").equals("")) continue;
                                             System.out.println("WORD:" + el.getAttribute("WORD") +" CLASSID: " + el.getAttribute("CLASSID") + " CM:"+el.getAttribute("CM"));
-
-                                            sbWord.append(el.getAttribute("WORD"));
-                                            cm += Float.parseFloat(el.getAttribute("CM"));
-                                            num++;
+                                            JuliusWord jw = new JuliusWord(el.getAttribute("WORD"),el.getAttribute("CLASSID"));
+                                            jwl.add(jw);
+                                            // sbWord.append(el.getAttribute("WORD"));
+                                            // cm += Float.parseFloat(el.getAttribute("CM"));
+                                            // num++;
                                         }
-
                                     }
-                                    System.out.println("WORDS:"+num);
-                                    System.out.println(sbWord+":"+cm/num);
+                                    core_.Order(jwl);
+                                    // System.out.println("WORDS:"+num);
+                                    // System.out.println(sbWord+":"+cm/num);
 
                                 }
                             }
@@ -75,9 +82,9 @@ class JuliusCliant{
                 }
                 System.out.println("\n");
             }
-
-            output.print("DIE");
-            client.close();
+            //
+            // output.print("DIE");
+            // client.close();
         }
         catch(Exception e){
             e.printStackTrace();
