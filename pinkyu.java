@@ -80,7 +80,7 @@ class Panel extends JPanel{
 public class Ball {
   public static void main(String arg[]){
     // Load the native library.
-    System.loadLibrary("opencv_java245");
+    System.loadLibrary("opencv_java310");
     // It is better to group all frames together so cut and paste to
     // create more frames is easier
     JFrame frame1 = new JFrame("Camera");
@@ -124,21 +124,16 @@ public class Ball {
      frame4.setSize(webcam_image.width()+40,webcam_image.height()+60);
     Mat array255=new Mat(webcam_image.height(),webcam_image.width(),CvType.CV_8UC1);
     array255.setTo(new Scalar(255));
-    /*Mat S=new Mat();
-    S.ones(new Size(hsv_image.width(),hsv_image.height()),CvType.CV_8UC1);
-    Mat V=new Mat();
-    V.ones(new Size(hsv_image.width(),hsv_image.height()),CvType.CV_8UC1);
-        Mat H=new Mat();
-    H.ones(new Size(hsv_image.width(),hsv_image.height()),CvType.CV_8UC1);*/
+
     Mat distance=new Mat(webcam_image.height(),webcam_image.width(),CvType.CV_8UC1);
     //new Mat();//new Size(webcam_image.width(),webcam_image.height()),CvType.CV_8UC1);
     List<Mat> lhsv = new ArrayList<Mat>(3);
     Mat circles = new Mat(); // No need (and don't know how) to initialize it.
-                 // The function later will do it... (to a 1*N*CV_32FC3)
-    Scalar hsv_min = new Scalar(0, 50, 50, 0);
-    Scalar hsv_max = new Scalar(6, 255, 255, 0);
-    Scalar hsv_min2 = new Scalar(175, 50, 50, 0);
-    Scalar hsv_max2 = new Scalar(179, 255, 255, 0);
+                 // この部分に色のHSV値を入れる。スカラーに入れる値は順にH,S,V,0
+    Scalar hsv_min = new Scalar(0, 130, 200, 0);
+    Scalar hsv_max = new Scalar(40, 220, 255, 0);
+    Scalar hsv_min2 = new Scalar(0, 130, 200, 0);
+    Scalar hsv_max2 = new Scalar(40, 220, 255, 0);
     double[] data=new double[3];
     if( capture.isOpened())
     {
@@ -152,13 +147,7 @@ public class Ball {
          Core.inRange(hsv_image, hsv_min, hsv_max, thresholded);
          Core.inRange(hsv_image, hsv_min2, hsv_max2, thresholded2);
          Core.bitwise_or(thresholded, thresholded2, thresholded);
-         // Notice that the thresholds don't really work as a "distance"
-         // Ideally we would like to cut the image by hue and then pick just
-         // the area where S combined V are largest.
-         // Strictly speaking, this would be something like sqrt((255-S)^2+(255-V)^2)>Range
-         // But if we want to be "faster" we can do just (255-S)+(255-V)>Range
-         // Or otherwise 510-S-V>Range
-         // Anyhow, we do the following... Will see how fast it goes...
+
          Core.split(hsv_image, lhsv); // We get 3 2D one channel Mats
          Mat S = lhsv.get(1);
          Mat V = lhsv.get(2);
@@ -189,7 +178,11 @@ public class Ball {
             for(int i=0; i<data2.length; i=i+3) {
               Point center= new Point(data2[i], data2[i+1]);
               //Core.ellipse( this, center, new Size( rect.width*0.5, rect.height*0.5), 0, 0, 360, new Scalar( 255, 0, 255 ), 4, 8, 0 );
-              Imgproc.ellipse( webcam_image, center, new Size((double)data2[i+2], (double)data2[i+2]), 0, 0, 360, new Scalar( 255, 0, 255 ), 4, 8, 0 );
+              Imgproc.ellipse( webcam_image, center, new Size((double)data2[i+2], (double)data2[i+2]),
+            		  0, 0, 360, new Scalar( 255, 0, 255 ), 4, 8, 0 );
+
+              //ピン球の座標（左上を原点）
+              System.out.println(center.x + " " + center.y);
             }
           }
          Imgproc.line(hsv_image, new Point(150,50), new Point(202,200), new Scalar(100,10,10)/*CV_BGR(100,10,10)*/, 3);
