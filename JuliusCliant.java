@@ -58,8 +58,16 @@ class JuliusCliant{
                                             Element el = (Element)w;
                                             if(el.getAttribute("WORD").equals("。")) continue;
                                             if(el.getAttribute("WORD").equals("")) continue;
-                                            System.out.println("WORD:" + el.getAttribute("WORD") +" CLASSID: " + el.getAttribute("CLASSID")+" PHONE: "+el.getAttribute("PHONE") + " CM:"+el.getAttribute("CM"));
-                                            JuliusWord jw = new JuliusWord(el.getAttribute("WORD"),el.getAttribute("PHONE"), el.getAttribute("CLASSID"));
+                                            String word = el.getAttribute("WORD");
+                                            String classId = el.getAttribute("CLASSID");
+                                            String phone = el.getAttribute("PHONE");
+                                            String cm = el.getAttribute("CM");
+                                            word = ToUnicode(word);
+                                            classId = ToUnicode(classId);
+                                            phone = ToUnicode(phone);
+                                            cm = ToUnicode(cm);
+                                            System.out.println("WORD:" + word +" CLASSID: " + classId+" PHONE: "+phone + " CM:"+cm);
+                                            JuliusWord jw = new JuliusWord(word,phone, classId);
                                             jwl.add(jw);
                                             // sbWord.append(el.getAttribute("WORD"));
                                             // cm += Float.parseFloat(el.getAttribute("CM"));
@@ -90,5 +98,9 @@ class JuliusCliant{
             e.printStackTrace();
         }
 
+    }
+
+    String ToUnicode(String src){
+        return new String(src.getBytes("UTF-8"),"UTF-8")
     }
 }
