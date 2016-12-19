@@ -12,6 +12,7 @@ public class Shooter {
         void main();
     }
     public static void main(String[] args){
+        System.out.println("Shooter");
         ShooterLib shooter = ShooterLib.INSTANCE;
         shooter.main();
     }
