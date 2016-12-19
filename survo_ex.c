@@ -14,21 +14,11 @@ int main(){
 	pwmSetRange(1024);
 
 	while(1){
-  	int num = 0;
+  	int num;
     int duty = 75;
 		scanf("%i",&num);
 	  printf("%d\n",num);
-		
-		if(num < -90 || 90 < num){
-			fprintf(stderr, "Angle over!\n");
-			break;
-		}
-		num += 90;
-		double ratio = num * (97 / 180.0) + 25;
-		printf("%f\n", ratio);
-		duty =(int)ratio;
-		printf("duty:%d\n", duty);
-    pwmWrite(18, duty);
+		pwmWrite(18,num);
 	}
   return 0;
 }

@@ -58,8 +58,8 @@ class JuliusCliant{
                                             Element el = (Element)w;
                                             if(el.getAttribute("WORD").equals("。")) continue;
                                             if(el.getAttribute("WORD").equals("")) continue;
-                                            System.out.println("WORD:" + el.getAttribute("WORD") +" CLASSID: " + el.getAttribute("CLASSID") + " CM:"+el.getAttribute("CM"));
-                                            JuliusWord jw = new JuliusWord(el.getAttribute("WORD"),el.getAttribute("CLASSID"));
+                                            System.out.println("WORD:" + el.getAttribute("WORD") +" CLASSID: " + el.getAttribute("CLASSID")+" PHONE: "+el.getAttribute("PHONE") + " CM:"+el.getAttribute("CM"));
+                                            JuliusWord jw = new JuliusWord(el.getAttribute("WORD"),el.getAttribute("PHONE"), el.getAttribute("CLASSID"));
                                             jwl.add(jw);
                                             // sbWord.append(el.getAttribute("WORD"));
                                             // cm += Float.parseFloat(el.getAttribute("CM"));
