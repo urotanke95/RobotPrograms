@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <wiringPi.h>
-#define REV_PWM 107
-#define STOP_PWM 77
-#define POS_PWM 50
+#define REV_PWM 125
+#define STOP_PWM 75
+#define POS_PWM 35
 
 int main()
 {
@@ -14,14 +14,16 @@ int main()
 	while(1){
 	    int num;
 	    scanf("%i",&num);
-		printf("%d\n",num);
 				
 		if (num == -1) {
-    		pwmWrite(18, REV_PWM);
+    		pwmWrite(18, 125);
+				printf("Reverse %d\n", REV_PWM);
 		} else if (num == 0) {
-    		pwmWrite(18, STOP_PWM);
+    		pwmWrite(18, 75);
+				printf("Stop\n");
 		} else if (num == 1) {
-    		pwmWrite(18, POS_PWM);
+				printf("Positive\n");
+    		pwmWrite(18, 30);
 		} else {
 			printf("end!\n");
 			break;
