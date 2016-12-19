@@ -61,12 +61,12 @@ class JuliusCliant{
                                             String word = el.getAttribute("WORD");
                                             String classId = el.getAttribute("CLASSID");
                                             String phone = el.getAttribute("PHONE");
-                                            String cm = el.getAttribute("CM");
+                                            String cmstr = el.getAttribute("CM");
                                             word = ToUnicode(word);
                                             classId = ToUnicode(classId);
                                             phone = ToUnicode(phone);
-                                            cm = ToUnicode(cm);
-                                            System.out.println("WORD:" + word +" CLASSID: " + classId+" PHONE: "+phone + " CM:"+cm);
+                                            cmstr = ToUnicode(cmstr);
+                                            System.out.println("WORD:" + word +" CLASSID: " + classId+" PHONE: "+phone + " CM:"+cmstr);
                                             JuliusWord jw = new JuliusWord(word,phone, classId);
                                             jwl.add(jw);
                                             // sbWord.append(el.getAttribute("WORD"));
@@ -101,6 +101,6 @@ class JuliusCliant{
     }
 
     String ToUnicode(String src){
-        return new String(src.getBytes("UTF-8"),"UTF-8")
+        return new String(src.getBytes("UTF-8"),"UTF-8");
     }
 }
