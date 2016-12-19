@@ -22,6 +22,11 @@ int main()
 		digitalWrite(22, 1);
 
 		delay(15000);
+		
+		digitalWrite(04, 0);
+		digitalWrite(17, 0);
+		digitalWrite(27, 0);
+		digitalWrite(22, 0);
 	}
 
 
