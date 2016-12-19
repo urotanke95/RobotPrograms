@@ -1,4 +1,5 @@
 #include <wiringPi.h>
+#include <stdio.h>
 
 int main()
 {
@@ -7,7 +8,7 @@ int main()
 	if (wiringPisetupGpio() == -1)
 		return 1;
 
-	scanf("%d", &input)
+	scanf("%d", &input);
 
 	if (input == 1) {
 		pinMode(04, OUTPUT);
