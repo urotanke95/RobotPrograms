@@ -12,7 +12,7 @@ class Core implements ICore {
 
     public void Order(List<JuliusWord> jwl){
         for (JuliusWord jw : jwl) {
-            System.out.println("CliantTester: " + jw.Word_);
+            System.out.println("CliantTester: " +" WORD="+ jw.Word_ + " PHONE=" + jw.Phone_);
         }
     }
 }
