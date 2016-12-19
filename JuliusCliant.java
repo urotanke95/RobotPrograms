@@ -101,6 +101,12 @@ class JuliusCliant{
     }
 
     String ToUnicode(String src){
-        return new String(src.getBytes("UTF-8"),"UTF-8");
+        String s = "";
+        try{
+            s = new String(src.getBytes("UTF-8"),"UTF-8");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 }
