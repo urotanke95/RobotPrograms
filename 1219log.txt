@@ -1,0 +1,100 @@
+ 1928  ls
+ 1929  git clone https://code.google.com/p/javacv
+ 1930  git update-server-info
+ 1931  git clone https://code.google.com/p/javacv
+ 1932  java -v
+ 1933  java -version
+ 1934  sudo apt-get -y install build-essential cmake cmake-qt-gui pkg-config libpng12-0 libpng12-dev libpng++-dev libpng3 libpnglite-dev zlib1g-dbg zlib1g zlib1g-dev pngtools libtiff4-dev libtiff4 libtiffxx0c2 libtiff-tools
+ 1935  opencv -v
+ 1936  cd .
+ 1937  cd ..
+ 1938  ls
+ 1939  cd Downloads/
+ 1940  ls
+ 1941  cd ..
+ 1942  cd Desktop/
+ 1943  ls
+ 1944  cd /
+ 1945  ls
+ 1946  cd usr
+ 1947  ls
+ 1948  cd lib
+ 1949  ls
+ 1950  cd ..
+ 1951  ls
+ 1952  cd include/
+ 1953  ls
+ 1954  cd opencv
+ 1955  ls
+ 1956  cd ../opencv2
+ 1957  ls
+ 1958  cd ~
+ 1959  cd work
+ 1960  ls
+ 1961  git clone https://github.com/bytedeco/javacv
+ 1962  cd javacv
+ 1963  ls
+ 1964  cd javacv
+ 1965  mvn clean install -Dplatform.name=linux-arm
+ 1966  cd ..
+ 1967  wget http://www.mirrorservice.org/sites/ftp.apache.org/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz
+ 1968  ls
+ 1969  sudo tar -xzvf ./apache-maven-3.2.5-bin.tar.gz 
+ 1970  sudo edit /etc/profile.d/maven.sh
+ 1971  sudoedit /etc/profile.d/maven.sh
+ 1972  /opt.cd /opt
+ 1973  sudoedit /etc/profile.d/maven.sh
+ 1974  mvn -version
+ 1975  /opt
+ 1976  cd /opt
+ 1977  ls
+ 1978  cd /etc/profile.d/maven.sh
+ 1979  cd /etc/profile.d/
+ 1980  ls
+ 1981  cat maven.sh
+ 1982  sudo reboot
+ 1983  startx
+ 1984  ls
+ 1985  cd work/
+ 1986  cd robot/RobotPrograms
+ 1987  git pull
+ 1988  gcc -o shoot shoot.c
+ 1989  vim shoot.c
+ 1990  gcc -o shoot shoot.c
+ 1991  vim shoot.c
+ 1992  sudo apt-get install ant
+ 1993  sudo apt-get updarte
+ 1994  sudo apt-get update
+ 1995  cd work/robot/RobotPrograms
+ 1996  ls
+ 1997  vim Shooter.java 
+ 1998  git add --all
+ 1999  git commit -am "Shooter"
+ 2000  git push
+ 2001  history | shoot
+ 2002  history | grep shoot
+ 2003  git pull
+ 2004  vim Shooter.java 
+ 2005  gcc -shared -fPIC -o libshoot2.so shoot2.c 
+ 2006  javac -cp jna-4.2.2.jar Shooter.java 
+ 2007  java Shooter 
+ 2008  vim Shooter.java 
+ 2009  java ProcessExecuter 
+ 2010  vim ProcessExecuter.java 
+ 2011  javac ProcessExecuter.java 
+ 2012  javac -cp jna4.2.2.jar ProcessExecuter.java 
+ 2013  javac -cp jna-4.2.2.jar ProcessExecuter.java 
+ 2014  java ProcessExecuter 
+ 2015  ls | grep hell
+ 2016  java -cp .:jna-4.2.2.jar ProcessExecuter 
+ 2017  gcc -shared -fPIC -o libhello.so hello.c 
+ 2018  java -cp .:jna-4.2.2.jar ProcessExecuter 
+ 2019  gcc -shared -fPIC -o libshoot2.so shoot2.c 
+ 2020  javac -cp jna-4.2.2.jar Shooter.java 
+ 2021  java -cp .:jna-4.2.2.jar Shooter 
+ 2022  gcc -shared -fPIC -o libshoot2.so shoot2.c -lwiringPi
+ 2023  java -cp .:jna-4.2.2.jar Shooter 
+ 2024  sudo java -cp .:jna-4.2.2.jar Shooter 
+ 2025  vim Shooter.java
+ 2026  man tail
+ 2027  history | tail -n 100 > 1219log.txt
