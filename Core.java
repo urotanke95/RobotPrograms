@@ -4,6 +4,7 @@ import java.util.ArrayList;
 class Core implements ICore {
     private static IApplication nowApp_;
     private static boolean quit = false;
+    private static boolean isRunApp = false;
 
     public static void main(String[] args){
         Core core = new Core();
@@ -15,9 +16,10 @@ class Core implements ICore {
 
         while(!quit){
             if(nowApp_==null) continue;
+            if(!isRunApp) continue;
             nowApp_.Update();
         }
-
+        thread.stop();
         System.out.println("BYE");
     }
 
@@ -27,19 +29,24 @@ class Core implements ICore {
             if(word.equals("silE")) return;
             else if(word.equals("end")) quitCore();
             else if(word.equals("test")) startApp(new TestApp());
+            else if(word.equals("move")) startApp(new RobotMoveApp());
             else if(word.equals("stop")) stopApp();
+
+            if(nowApp_!=null)nowApp_.Order(word);
     	}
     	return;
     }
 
     void startApp(IApplication app){
-        nowApp_.Start();
+        app.Start();
         nowApp_ = app;
+        isRunApp = true;
     }
 
     void stopApp(){
-        if(nowApp_.Cleanup() != 0)System.out.println("Cleanup Error");
+        isRunApp = false;
 
+        if(nowApp_.Cleanup() != 0)System.out.println("Cleanup Error");
         nowApp_.Quit();
         nowApp_ = null;
     }

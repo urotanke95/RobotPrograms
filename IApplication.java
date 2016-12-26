@@ -3,4 +3,5 @@ interface IApplication {
     void Quit();
     void Update();
     int Cleanup();
+    void Order(String word);
 }

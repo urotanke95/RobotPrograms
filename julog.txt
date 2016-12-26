@@ -1,0 +1,105 @@
+Ready Cliant ...
+STARTPROC
+
+
+INPUT
+
+
+INPUT
+
+
+STARTRECOG
+
+
+INPUT
+
+
+ENDRECOG
+
+
+INPUTPARAM
+
+
+REJECTED
+
+
+INPUT
+
+
+INPUT
+
+
+STARTRECOG
+
+
+INPUT
+
+
+ENDRECOG
+
+
+INPUTPARAM
+
+
+WORD:silB CLASSID: 2 PHONE: silB CM:0.481
+WORD:i CLASSID: 8 PHONE: s u s u m e CM:0.987
+WORD:silE CLASSID: 3 PHONE: silE CM:1.000
+CliantTester:  WORD=silB PHONE=silB
+CliantTester:  WORD=i PHONE=s u s u m e
+CliantTester:  WORD=silE PHONE=silE
+RECOGOUT
+
+
+INPUT
+
+
+INPUT
+
+
+STARTRECOG
+
+
+INPUT
+
+
+ENDRECOG
+
+
+INPUTPARAM
+
+
+WORD:silB CLASSID: 2 PHONE: silB CM:1.000
+WORD:[ CLASSID: 0 PHONE: a: CM:0.318
+WORD:i CLASSID: 8 PHONE: s u s u m e CM:0.996
+WORD:silE CLASSID: 3 PHONE: silE CM:1.000
+CliantTester:  WORD=silB PHONE=silB
+CliantTester:  WORD=[ PHONE=a:
+CliantTester:  WORD=i PHONE=s u s u m e
+CliantTester:  WORD=silE PHONE=silE
+RECOGOUT
+
+
+INPUT
+
+
+INPUT
+
+
+STARTRECOG
+
+
+INPUT
+
+
+ENDRECOG
+
+
+INPUTPARAM
+
+
+REJECTED
+
+
+INPUT
+
+
