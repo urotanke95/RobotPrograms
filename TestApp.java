@@ -15,4 +15,8 @@ class TestApp implements IApplication {
         System.out.println("Cleanup done");
         return 0;
     }
+
+    public void Order(String word){
+        System.out.println(word);
+    }
 }
