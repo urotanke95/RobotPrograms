@@ -31,7 +31,7 @@ class Core implements ICore {
             else if(word.equals("test")) startApp(new TestApp());
             else if(word.equals("move")) startApp(new RobotMoveApp());
             else if(word.equals("stop")) stopApp();
-
+						else if(word.equals("pinkyu")) startApp(new PinkyuApp());
             if(nowApp_!=null)nowApp_.Order(word);
     	}
     	return;
