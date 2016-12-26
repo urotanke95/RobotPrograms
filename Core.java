@@ -33,7 +33,7 @@ class Core implements ICore {
     }
 
     void startApp(IApplication app){
-        nowApp_.Start();
+        app.Start();
         nowApp_ = app;
     }
 
