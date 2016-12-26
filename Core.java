@@ -1,18 +1,38 @@
 import java.util.List;
+import java.util.ArrayList;
+
 class Core implements ICore {
 
     public static void main(String[] args){
         Core core = new Core();
-        /* 別スレッドとして動作させるオブジェクトを作成 */
+        
         SubThread sub = new SubThread(core);
-        /* 別のスレッドを作成し、スレッドを開始する */
+        
         Thread thread = new Thread(sub);
         thread.start();
     }
 
     public void Order(List<JuliusWord> jwl){
-        for (JuliusWord jw : jwl) {
-            System.out.println("CliantTester: " +" WORD="+ jw.Word_ + " PHONE=" + jw.Phone_);
-        }
+		List<String> words = new ArrayList<String>();
+		int j = 0;
+    for (JuliusWord jw: jwl) {
+			words.add(jw.Word_);
+		}
+		while(!words.get(j).equals("silE")) {
+			if (words.get(j).equals("go")) {
+				PinkyuTester pinkyu1 = new PinkyuTester();
+				pinkyu1.main(null);
+				j = 0;
+				break;
+			} else if (words.get(j).equals("back")) {
+				GomiTester gomi = new GomiTester();
+				gomi.main(null);
+				j = 0;
+				break;
+			} else {
+				j++;
+			}
+		}
+		return;
     }
 }
