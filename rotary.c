@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define PIN_A 19
+#define PIN_B 26
+
 int a;
 int b;
 int p_a;
@@ -41,7 +44,7 @@ void click_b(void) {
 }
 
 int main(void){
-	if (wiringPiSetupGPIO() == -1) {
+	if (wiringPiSetupGpio() == -1) {
 		fprintf(stderr, "Setup Error\n");
 		return 1;
 	}
@@ -50,10 +53,10 @@ int main(void){
 	p_a = 0;
 	p_b = 0;
 	num = 0;
-    pullUpDnControl(0, PUD_UP);
-	pullUpDnControl(1, PUD_UP);
-	wiringPiISR(0, INT_EDGE_BOTH, click_a);
-	wiringPiISR(1, INT_EDGE_BOTH, click_b);
+  pullUpDnControl(PIN_A, PUD_UP);
+	pullUpDnControl(PIN_B, PUD_UP);
+	wiringPiISR(PIN_A, INT_EDGE_BOTH, click_a);
+	wiringPiISR(PIN_B, INT_EDGE_BOTH, click_b);
 	while(1){
 		sleep(1);
 	}
