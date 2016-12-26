@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.ArrayList;
+
 class Core implements ICore {
 
     public static void main(String[] args){
@@ -11,23 +13,20 @@ class Core implements ICore {
     }
 
     public void Order(List<JuliusWord> jwl){
-		String[] words = new String[30];
-		int i = 0, j = 0;
-        i = 0;
-		while(!words[j].equals("silE")) {
-			if (words[j].equals("go")) {
+		List<String> words = new ArrayList<String>();
+		int j = 0;
+    for (JuliusWord jw: jwl) {
+			words.add(jw.Word_);
+		}
+		while(!words.get(j).equals("silE")) {
+			if (words.get(j).equals("go")) {
 				PinkyuTester pinkyu1 = new PinkyuTester();
 				pinkyu1.main(null);
 				j = 0;
 				break;
-			} else if (words[j].equals("back")) {
+			} else if (words.get(j).equals("back")) {
 				GomiTester gomi = new GomiTester();
 				gomi.main(null);
-				j = 0;
-				break;
-			} else if (words[i].equals("SHOT")) {
-				Shooter shoot = new Shooter();
-				shoot.main(null);
 				j = 0;
 				break;
 			} else {
