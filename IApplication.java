@@ -1,6 +1,6 @@
 interface IApplication {
-    void OnEnable();
-    void OnDisable();
+    void Start();
+    void Quit();
     void Update();
     int Cleanup();
 }
