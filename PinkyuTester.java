@@ -10,10 +10,29 @@ public class PinkyuTester {
 
         // Cの関数名と一致させる
         void main();
+		int getX();
+		int getY();
     }
+	OpencvLib opencvLib;
     public static void main(String[] args){
         System.out.println("OpencvTester");
-        OpencvLib opencvLib = OpencvLib.INSTANCE;
+        opencvLib = OpencvLib.INSTANCE;
         opencvLib.main();
     }
+	
+	public int getX() {
+		if (opencvLib != null) {
+			return opencvLib.getX();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getY() {
+		if (opencvLib != null) {
+			return opencvLib.getY();
+		} else {
+			return 0;
+		}
+	}
 }

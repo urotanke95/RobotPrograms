@@ -21,13 +21,24 @@
 // Vector
 #include <vector>
 
+#include "move_api.h"
+
 using namespace std;
 
 // >>>>> Color to be tracked
 #define MIN_H_BLUE 30
 #define MAX_H_BLUE
 // <<<<< Color to be tracked
+int X = 0;
+int Y = 0;
 
+int getX() {
+	return X;
+}
+
+int getY() {
+	return Y;
+}
 
 int main()
 {
@@ -37,7 +48,8 @@ int main()
 	// >>>> Kalman Filter
 	int stateSize = 6;
 	int measSize = 4;
-	int contrSize = 0;
+	int contrSize = 0
+	g_init();
 
 	unsigned int type = CV_32F;
 	cv::KalmanFilter kf(stateSize, measSize, contrSize, type);
@@ -234,8 +246,20 @@ int main()
 			cv::putText(res, sstr.str(),
 				cv::Point(center.x + 3, center.y - 3),
 				cv::FONT_HERSHEY_SIMPLEX, 0.5, CV_RGB(20, 150, 20), 2);
-			if (center.x != 0 || center.y != 0)
-				cout << center.x << ", " << center.y << endl;
+			if (center.x != 0 || center.y != 0) {
+				X = center.x;
+				Y = center.y;
+			}
+			/*if (center.x < 550) {
+				g_turn(1,500);
+			} else if (center.x >700) {
+				g_turn(0, 500);
+			} else if (center.y <500) {
+				g_go_straight(1, 500);
+			} else {
+				g_stop();
+			}
+			*/
 		}
 		// <<<<< Detection result
 
@@ -277,7 +301,6 @@ int main()
 				state.at<float>(4) = meas.at<float>(2);
 				state.at<float>(5) = meas.at<float>(3);
 				// <<<< Initialization
-
 				found = true;
 			}
 			else
@@ -294,6 +317,6 @@ int main()
 		ch = cv::waitKey(1);
 	}
 	// <<<<< Main loop
-
+	g_quit();
 	return EXIT_SUCCESS;
 }
