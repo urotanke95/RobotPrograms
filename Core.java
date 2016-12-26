@@ -14,8 +14,8 @@ class Core implements ICore {
 		String[] words = new String[30];
 		int i = 0, j = 0;
         i = 0;
-		while(words[j] != "silE") {
-			if (words[j].equals("GO")) {
+		while(!words[j].equals("silE")) {
+			if (words[j].equals("go")) {
 				PinkyuTester pinkyu1 = new PinkyuTester();
 				pinkyu1.main(null);
 				j = 0;
