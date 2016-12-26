@@ -134,10 +134,10 @@ int main()
             kf.transitionMatrix.at<float>(9) = dT;
             // <<<< Matrix A
 
-            cout << "dT:" << endl << dT << endl;
+           // cout << "dT:" << endl << dT << endl;
 
             state = kf.predict();
-            cout << "State post:" << endl << state << endl;
+           // cout << "State post:" << endl << state << endl;
 
             cv::Rect predRect;
             predRect.width = state.at<float>(4);
@@ -192,9 +192,9 @@ int main()
             cv::Rect bBox;
             bBox = cv::boundingRect(contours[i]);
 
-            float ratio = (float) bBox.width / (float) bBox.height;
+            float ratio = (float) bBox.height / (float) bBox.width;
             // Searching for a bBox almost square
-            if (ratio > 2.0 && bBox.area() >= 400)
+            if (ratio > 2.0 && bBox.area() >= 400 && ratio <6.0)
             {
                 balls.push_back(contours[i]);
                 ballsBox.push_back(bBox);
@@ -202,7 +202,7 @@ int main()
         }
         // <<<<< Filtering
 
-        cout << "Balls found:" << ballsBox.size() << endl;
+       // cout << "Balls found:" << ballsBox.size() << endl;
 
         // >>>>> Detection result
         for (size_t i = 0; i < balls.size(); i++)
@@ -268,7 +268,7 @@ int main()
             else
                 kf.correct(meas); // Kalman Correction
 
-            cout << "Measure matrix:" << endl << meas << endl;
+            //cout << "Measure matrix:" << endl << meas << endl;
         }
         // <<<<< Kalman Update
 
