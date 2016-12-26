@@ -19,4 +19,8 @@ public class PinkyuApp implements IApplication {
 	int CleanUp() {
 		return 0;
 	}
+	
+	void Order(String word) {
+		System.out.println(word);
+	}
 }
