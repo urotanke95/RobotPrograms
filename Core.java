@@ -29,6 +29,7 @@ class Core implements ICore {
             if(word.equals("silE")) return;
             else if(word.equals("end")) quitCore();
             else if(word.equals("test")) startApp(new TestApp());
+            else if(word.equals("move")) startApp(new RobotMoveApp());
             else if(word.equals("stop")) stopApp();
 
             if(nowApp_!=null)nowApp_.Order(word);
