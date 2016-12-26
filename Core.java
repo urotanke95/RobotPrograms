@@ -30,6 +30,8 @@ class Core implements ICore {
             else if(word.equals("end")) quitCore();
             else if(word.equals("test")) startApp(new TestApp());
             else if(word.equals("stop")) stopApp();
+
+            if(nowApp_!=null)nowApp_.Order(word);
     	}
     	return;
     }
