@@ -1,7 +1,7 @@
 import java.nio.charset.Charset;
 class MojiTest {
     public static void main(String[] args) {
-        String s = "¤¢¤¤¤¦¤¨¤ª";//shift-jis ??????ï¿½ï¿½???????
+        String s = "‚ ‚¢‚¤‚¦‚¨";//shift-jis ???????¿½?¿½???????
         try{
             System.out.println("shift-jis s = " + s);
             System.out.println("1 "+s.getBytes("UTF-8"));
