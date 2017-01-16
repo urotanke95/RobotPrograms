@@ -265,16 +265,13 @@ int main()
 			g_quit();
 			return 0;
 		}
-		if (balls.size() == 0) {
-			X = 1300;
-			Y = 800;
-		}	
 		// <<<<< Detection result
 
 		// >>>>> Kalman Update
 		if (balls.size() == 0)
 		{
-			X = 
+			X = 1300;
+			Y = 800;
 			notFoundCount++;
 			//cout << "notFoundCount:" << notFoundCount << endl;
 			if (notFoundCount >= 100)
