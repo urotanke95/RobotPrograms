@@ -252,15 +252,15 @@ int main()
 			}
 		}
 		
-		if (X < 600) {
+		if (X > 0 && X < 600) {
 			g_turn(1,500);
-		} else if (X >680) {
+		} else if (X >680 && X < 1280) {
 			g_turn(0, 500);
-		} else if (Y <600) {
+		} else if (Y <= 650) {
 			g_go_straight(1, 500);
-		} else {
+		} else if (Y > 650){
 			g_go_straight(1,500);
-			sleep(500);
+			sleep(1000);
 			g_stop();
 			g_quit();
 			return 0;
