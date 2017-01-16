@@ -11,9 +11,7 @@ public class PinkyuApp implements IApplication {
 	}
 	
 	public void Update() {
-		x = pinkyu1.getX();
-		y = pinkyu1.getY();
-		System.out.println(x + " " + y);
+		
 	}
 	
 	public int CleanUp() {
