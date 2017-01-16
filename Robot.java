@@ -2,6 +2,8 @@ public class Robot {
     private static MoveLib moveLib_;
     static int speed_ = 500;
     static int turnSpeed_ = 300;
+    static final int SPEED = 500;
+    static final int TURN_SPEED = 300;
 
     public enum FB{
         Front,
@@ -15,6 +17,7 @@ public class Robot {
 
     public static void Init(){
         moveLib_ = MoveLib.INSTANCE;
+        moveLib_.g_init();
     }
 
     public static void Move(FB dir){
