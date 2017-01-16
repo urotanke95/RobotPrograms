@@ -21,7 +21,8 @@ public class Robot {
     }
 
     public static void Move(FB dir){
-        if(dir == FB.Front) moveLib_.g_go_straight(1,(char)speed_);
+				System.out.println("Robot go straight");
+        if(dir == FB.Front) moveLib_.g_go_straight(1,(char)500);
         if(dir == FB.Back) moveLib_.g_go_straight(0,(char)speed_);
     }
 
