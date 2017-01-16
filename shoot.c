@@ -17,6 +17,10 @@ int main()
       pinMode( 04, OUTPUT );
 
       digitalWrite(04, 1);
+      delay(5000);
+      digitalWrite(04, 0);
+      delay(3000);
+      digitalWrite(04, 1);
       break;
     }else
       continue;
