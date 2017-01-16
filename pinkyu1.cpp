@@ -180,8 +180,8 @@ int main()
 		// >>>>> Color Thresholding
 		// Note: change parameters for different colors
 		cv::Mat rangeRes = cv::Mat::zeros(frame.size(), CV_8UC1);
-		cv::inRange(frmHsv, cv::Scalar(0, 130, 200),
-			cv::Scalar(30, 200, 255), rangeRes);
+		cv::inRange(frmHsv, cv::Scalar(0, 100, 200),
+			cv::Scalar(30, 250, 255), rangeRes);
 		// <<<<< Color Thresholding
 
 		// >>>>> Improving the result
@@ -263,7 +263,7 @@ int main()
 		} else if (Y <= 450) {
 			g_go_straight(1, 500);
 			cout << "go straight" << endl;
-		} else if (Y > 450 && X < 1280){
+		} else if (Y > 450 && X <= 340 && X >= 260){
 			time_t t = time(NULL);
 			cout << "almost there.." << endl;
 			while (time(NULL) - t <= 1) {

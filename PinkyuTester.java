@@ -15,7 +15,7 @@ public class PinkyuTester {
     }
 	
 	public static void main(String[] args){
-		Opencvlib opencvLib = OpencvLib.INSTANCE;    
+		OpencvLib opencvLib = OpencvLib.INSTANCE;    
         System.out.println("OpencvTester");
         opencvLib.main();
     }
