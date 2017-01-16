@@ -13,26 +13,10 @@ public class PinkyuTester {
 		int getX();
 		int getY();
     }
-	OpencvLib opencvLib;
-    public static void main(String[] args){
+	
+	public static void main(String[] args){
+		Opencvlib opencvLib = OpencvLib.INSTANCE;    
         System.out.println("OpencvTester");
-        opencvLib = OpencvLib.INSTANCE;
         opencvLib.main();
     }
-	
-	public int getX() {
-		if (opencvLib != null) {
-			return opencvLib.getX();
-		} else {
-			return 0;
-		}
-	}
-	
-	public int getY() {
-		if (opencvLib != null) {
-			return opencvLib.getY();
-		} else {
-			return 0;
-		}
-	}
 }
