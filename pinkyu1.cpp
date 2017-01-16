@@ -254,14 +254,18 @@ int main()
 			}
 		}
 		
-		if (X > 0 && X < 600) {
-			g_turn(1,500);
-		} else if (X >680 && X < 1280) {
-			g_turn(0, 500);
-		} else if (Y <= 650) {
+		if (X > 0 && X < 260) {
+			g_turn(0,500);
+			cout << "turn left" << endl;
+		} else if (X >340 && X < 640) {
+			g_turn(1, 500);
+			cout << "turn right" << endl;
+		} else if (Y <= 450) {
 			g_go_straight(1, 500);
-		} else if (Y > 650 && X < 1280){
+			cout << "go straight" << endl;
+		} else if (Y > 450 && X < 1280){
 			time_t t = time(NULL);
+			cout << "almost there.." << endl;
 			while (time(NULL) - t <= 1) {
 				g_go_straight(1,500);
 			}
