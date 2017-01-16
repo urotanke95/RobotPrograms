@@ -2,8 +2,8 @@ public class PinkyuApp implements IApplication {
 	PinkyuTester pinkyu1;
 	int x, y;
 	public void Start() {
-		pinkyu1 = new PinkyuTester(null);
-		pinkyu1.main();
+		pinkyu1 = new PinkyuTester();
+		pinkyu1.main(null);
 	}
 	
 	public void Quit() {
