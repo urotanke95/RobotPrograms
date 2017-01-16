@@ -29,8 +29,8 @@ using namespace std;
 #define MIN_H_BLUE 30
 #define MAX_H_BLUE
 // <<<<< Color to be tracked
-int X = 0;
-int Y = 0;
+int X = 1300;
+int Y = 800;
 
 int getX() {
 	return X;
@@ -48,7 +48,7 @@ int main()
 	// >>>> Kalman Filter
 	int stateSize = 6;
 	int measSize = 4;
-	int contrSize = 0
+	int contrSize = 0;
 	g_init();
 
 	unsigned int type = CV_32F;
@@ -217,7 +217,7 @@ int main()
 				ratio = 1.0f / ratio;
 
 			// Searching for a bBox almost square
-			if (ratio > 0.80 && bBox.area() > bBoxmax.area())
+			if (bBox.area() > bBoxmax.area())
 			{
 				bBoxmax = bBox;
 				max = contours[i];
@@ -250,26 +250,31 @@ int main()
 				X = center.x;
 				Y = center.y;
 			}
-			if (center.x < 600) {
-				g_turn(1,500);
-			} else if (center.x >680) {
-				g_turn(0, 500);
-			} else if (center.y <600) {
-				g_go_straight(1, 500);
-			} else {
-				g_go_straight(1,500);
-				sleep(500);
-				g_stop();
-				g_quit();
-				return 0;
-			}
-			
 		}
+		
+		if (X < 600) {
+			g_turn(1,500);
+		} else if (X >680) {
+			g_turn(0, 500);
+		} else if (Y <600) {
+			g_go_straight(1, 500);
+		} else {
+			g_go_straight(1,500);
+			sleep(500);
+			g_stop();
+			g_quit();
+			return 0;
+		}
+		if (balls.size() == 0) {
+			X = 1300;
+			Y = 800;
+		}	
 		// <<<<< Detection result
 
 		// >>>>> Kalman Update
 		if (balls.size() == 0)
 		{
+			X = 
 			notFoundCount++;
 			//cout << "notFoundCount:" << notFoundCount << endl;
 			if (notFoundCount >= 100)
