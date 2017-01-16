@@ -250,16 +250,20 @@ int main()
 				X = center.x;
 				Y = center.y;
 			}
-			/*if (center.x < 550) {
+			if (center.x < 600) {
 				g_turn(1,500);
-			} else if (center.x >700) {
+			} else if (center.x >680) {
 				g_turn(0, 500);
-			} else if (center.y <500) {
+			} else if (center.y <600) {
 				g_go_straight(1, 500);
 			} else {
+				g_go_straight(1,500);
+				sleep(500);
 				g_stop();
+				g_quit();
+				return 0;
 			}
-			*/
+			
 		}
 		// <<<<< Detection result
 
