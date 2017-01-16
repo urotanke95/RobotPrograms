@@ -21,6 +21,8 @@
 // Vector
 #include <vector>
 
+#include <time.h>
+
 #include "move_api.h"
 
 using namespace std;
@@ -258,9 +260,11 @@ int main()
 			g_turn(0, 500);
 		} else if (Y <= 650) {
 			g_go_straight(1, 500);
-		} else if (Y > 650){
-			g_go_straight(1,500);
-			sleep(1000);
+		} else if (Y > 650 && X < 1280){
+			time_t t = time(NULL);
+			while (time(NULL) - t <= 1) {
+				g_go_straight(1,500);
+			}
 			g_stop();
 			g_quit();
 			return 0;
