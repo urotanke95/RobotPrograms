@@ -1,0 +1,4 @@
+@startuml{plantuml_class_assocation.png}
+class Robot{    
+}
+@enduml
