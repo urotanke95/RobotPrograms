@@ -48,7 +48,9 @@ int main(void)
     }
 
     while (!quit_flg)
-    {     // read from 0xE2
+    {
+        //一つ目
+        // read from 0xE2
         buf[ 0 ] = 0x00;
         buf[ 1 ] = 0x51;
 

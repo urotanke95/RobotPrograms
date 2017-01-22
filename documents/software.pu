@@ -1,4 +1,80 @@
-@startuml{plantuml_class_assocation.png}
-class Robot{    
+@startuml{software.html}
+class Robot{
+    -static MoveLib moveLib_;
+    -static int left_wheel_ = 500;
+    -static int right_wheel_ = 500;
+
+    + Init()
+    + Move(FB dir, int speed)
+    + Turn(LR lr, int speed)
+    + SetLeft(int speed)
+    + SetRight(int speed)
+    + GetLeftSensorValue()
+    + GetRightSensorValue()
+    + Quit()
+    + Stop()
 }
+interface MoveLib{
+    + g_init()
+    + g_go_straight(int front, char speed)
+    + g_left_wheel(char speed)
+    + g_right_wheel(char speed)
+    + g_turn(int left, char speed)
+    + g_stop()
+    + g_quit()
+}
+interface ICore{
+
+}
+class Core{
+    -static IApplication nowApp_
+    -static boolean quit_
+    -static boolean isRunApp_
+    + main(String[] args)
+    + Order(List<JuliusWord> jwl)
+    - startApp(IApplication app)
+    - stopApp()
+    - quitCore()
+}
+interface IApplication{
+
+}
+class Application{
+
+}
+interface Runnable{
+
+}
+class SubThread{
+    - Core core_
+    +SubThread(Core core)
+    +run()
+}
+class JuliusCliant{
+    - ICore core_
+    + JuliusCliant(ICore core)
+    + Run()
+}
+class move_api{
+    coding C
+    ..
+    + g_init()
+    + g_go_straight(int front, char speed)
+    + g_left_wheel(char speed)
+    + g_right_wheel(char speed)
+    + g_turn(int left, char speed)
+    + g_stop()
+    + g_quit()
+}
+Core -d-> IApplication
+Application -u-|>IApplication
+Application -> Robot :use
+Robot -> MoveLib
+MoveLib -> move_api :call
+SubThread -u-|> Runnable
+Core -u-> SubThread : run
+SubThread -> JuliusCliant :run
+JuliusCliant -d-> ICore :order
+ICore <|-l-Core
+
 @enduml

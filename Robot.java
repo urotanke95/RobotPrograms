@@ -1,55 +1,62 @@
-
-public enum FB{
-    Front,
-    Back,
-}
-
-public enum LR{
-    Left,
-    Right,
-}
-
-
-public class Robot {
+public final class Robot {
     private static MoveLib moveLib_;
-    static int speed_ = 500;
-    static int turnSpeed_ = 300;
-    static final int SPEED = 500;
-    static final int TURN_SPEED = 300;
+    private static int left_wheel_ = 500;
+    private static int right_wheel_ = 500;
 
     public static void Init(){
         moveLib_ = MoveLib.INSTANCE;
         moveLib_.g_init();
     }
 
-    public static void Move(FB dir){
-				System.out.println("Robot go straight");
-        if(dir == FB.Front) moveLib_.g_go_straight(1,(char)500);
-        if(dir == FB.Back) moveLib_.g_go_straight(0,(char)speed_);
-    }
-
     public static void Move(FB dir, int speed){
-        speed_ = speed;
-        if(dir == FB.Front) moveLib_.g_go_straight(1,(char)speed_);
-        if(dir == FB.Back) moveLib_.g_go_straight(0,(char)speed_);
-    }
+        left_wheel_ = speed;
+        right_wheel_ = speed;
 
-    public static void Turn(LR lr){
-        if(lr == LR.Left) moveLib_.g_turn(1,(char)turnSpeed_);
-        if(lr == LR.Right) moveLib_.g_turn(0,(char)turnSpeed_);
+        if(dir == FB.Front) moveLib_.g_go_straight(1,(char)speed);
+        if(dir == FB.Back) moveLib_.g_go_straight(0,(char)speed);
     }
 
     public static void Turn(LR lr, int speed){
-        turnSpeed_ = speed;
-        if(lr == LR.Left) moveLib_.g_turn(1,(char)turnSpeed_);
-        if(lr == LR.Right) moveLib_.g_turn(0,(char)turnSpeed_);
+        if(LR.Left == lr){
+            left_wheel_ = -speed;
+            right_wheel_ = speed;
+        }else if(LR.Right == lr){
+            left_wheel_ = speed;
+            right_wheel_ = -speed;
+        }
+        moveLib_.g_left_wheel((char)left_wheel_);
+        moveLib_.g_right_wheel((char)right_wheel_);
+    }
+
+    public static void SetLeft(int speed){
+        left_wheel_ = speed;
+        moveLib_.g_left_wheel((char)left_wheel_);
+    }
+
+    public static void SetRight(int speed){
+        right_wheel_ = speed;
+        moveLib_.g_right_wheel((char)right_wheel_);
+    }
+
+    public static int GetLeftSensorValue(){
+        // TODO create later
+        return 100;
+    }
+    public static int GetRightSensorValue(){
+        // TODO create later
+        return 100;
     }
 
     public static void Quit(){
+        left_wheel_ = 0;
+        right_wheel_ = 0;
+
         moveLib_.g_quit();
     }
 
     public static void Stop(){
+        left_wheel_ = 0;
+        right_wheel_ = 0;
         moveLib_.g_stop();
     }
 
