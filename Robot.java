@@ -1,19 +1,21 @@
+
+public enum FB{
+    Front,
+    Back,
+}
+
+public enum LR{
+    Left,
+    Right,
+}
+
+
 public class Robot {
     private static MoveLib moveLib_;
     static int speed_ = 500;
     static int turnSpeed_ = 300;
     static final int SPEED = 500;
     static final int TURN_SPEED = 300;
-
-    public enum FB{
-        Front,
-        Back,
-    }
-
-    public enum LR{
-        Left,
-        Right,
-    }
 
     public static void Init(){
         moveLib_ = MoveLib.INSTANCE;
