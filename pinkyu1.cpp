@@ -25,6 +25,8 @@
 
 #include "move_api.h"
 
+#includ <cstdlib>
+
 using namespace std;
 
 // >>>>> Color to be tracked
@@ -332,6 +334,6 @@ int main()
 	}
 	// <<<<< Main loop
 	g_quit();
-	system("./survo_test");
+	
 	return EXIT_SUCCESS;
 }
