@@ -9,6 +9,9 @@
 void quit_func();
 
 int quit_flg = 0;
+int range1   = 0;
+int range2   = 0;
+
 
 int main(void)
 {
@@ -16,9 +19,6 @@ int main(void)
     char filename[ 20 ];
     char buf[ 10 ];
     int  res;
-    int  range1 = 0;
-    int  range2 = 0;
-
     // set signal handler
     signal(SIGINT, quit_func);
 
