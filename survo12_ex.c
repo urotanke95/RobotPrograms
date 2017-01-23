@@ -27,7 +27,7 @@ int main(){
 			printf("close arm");
 			pwmWrite(12, 25); //アームが閉じる
 		} else if(stdcmp(com, "pause") == 0) {
-			printf("pause movement")
+			printf("pause movement");
 			pwmWrite(12, 75); //一時停止
 		} else if(stdcmp(com, "end") == 0) {
 			printf("end of program");
