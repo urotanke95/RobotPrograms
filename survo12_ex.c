@@ -21,14 +21,14 @@ int main(){
 		scanf("%s",com);
 	  //printf("%s\n",num);
 		if (strcmp(com, "open") == 0) {
-			pwmWrite(12, 125);
+			pwmWrite(12, 125); //アームが開く
 		} else if(strcmp(com, "close") == 0) {
-			pwmWrite(12, 25);
+			pwmWrite(12, 25); //アームが閉じる
 		} else if(stdcmp(com, "pause") == 0) {
-			pwmWrite(12, 75);
+			pwmWrite(12, 75); //一時停止
 		} else if(stdcmp(com, "end") == 0) {
-			return 0;
+			return 0; //終了
 		}
 	}
-  return 0;
+	return 0;
 }
