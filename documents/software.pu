@@ -66,15 +66,39 @@ class move_api{
     + g_stop()
     + g_quit()
 }
-Core -d-> IApplication
+class CollisionSensor{
+    - SensorLib sensorLib_
+    + int GetLeft()
+    + int GetRight()
+    - run()
+}
+interface SensorLib{
+    + main()
+    + int get_left()
+    + int get_right()
+}
+class collision_sensor{
+    coding C
+    ..
+    + main()
+    + int get_left()
+    + int get_right()
+}
+Core -d-> IApplication : have
 Application -u-|>IApplication
 Application -> Robot :use
 Robot -> MoveLib
 MoveLib -> move_api :call
 SubThread -u-|> Runnable
-Core -u-> SubThread : run
+Core -u-> SubThread : start thread
 SubThread -> JuliusCliant :run
 JuliusCliant -d-> ICore :order
 ICore <|-l-Core
+Core -d-> CollisionSensor : start thread
+CollisionSensor -u-|> Runnable
+CollisionSensor -l-> SensorLib
+SensorLib -d->collision_sensor
+Application -l-> CollisionSensor : use
+
 
 @enduml
