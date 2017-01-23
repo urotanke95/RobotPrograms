@@ -13,7 +13,7 @@ int range1   = 0;
 int range2   = 0;
 
 
-int main(void)
+int main()
 {
     int  fd1, fd2;
     char filename[ 20 ];
