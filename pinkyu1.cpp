@@ -332,5 +332,6 @@ int main()
 	}
 	// <<<<< Main loop
 	g_quit();
+	system("./survo_test");
 	return EXIT_SUCCESS;
 }
