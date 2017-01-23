@@ -1,16 +1,11 @@
 public final class Robot {
     private static MoveLib moveLib_;
-    private static CollisionSensor collisionSensor_;
     private static int left_wheel_ = 0;
     private static int right_wheel_ = 0;
 
     public static void Init(){
         moveLib_ = MoveLib.INSTANCE;
         moveLib_.g_init();
-        /* Init Sensor Thread */
-        collisionSensor_ = new CollisionSensor();
-        Thread sensorThread = Thread(collisionSensor_);
-        sensorThread.start();
     }
 
     public static void Move(FB dir, int speed){
@@ -41,15 +36,6 @@ public final class Robot {
     public static void SetRight(int speed){
         right_wheel_ = speed;
         moveLib_.g_right_wheel((char)right_wheel_);
-    }
-
-    public static int GetLeftSensorValue(){
-        // TODO create later
-        return collisionSensor_.GetLeft();
-    }
-    public static int GetRightSensorValue(){
-        // TODO create later
-        return collisionSensor_.GetRight();
     }
 
     public static void Quit(){

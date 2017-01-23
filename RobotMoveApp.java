@@ -5,6 +5,7 @@ class RobotMoveApp implements IApplication {
     }
 
     public void Quit(){
+        Robot.Stop();
         Robot.Quit();
     }
 
@@ -18,9 +19,9 @@ class RobotMoveApp implements IApplication {
     }
 
     public void Order(String word){
-        if(word.equals("front"))Robot.Move(Robot.FB.Front);
-        if(word.equals("back"))Robot.Move(Robot.FB.Back);
-        if(word.equals("left"))Robot.Turn(Robot.LR.Left);
-        if(word.equals("right"))Robot.Turn(Robot.LR.Right);
+        if(word.equals("front"))Robot.Move(FB.Front, 300);
+        if(word.equals("back"))Robot.Move(FB.Back, 300);
+        if(word.equals("left"))Robot.Turn(LR.Left, 300);
+        if(word.equals("right"))Robot.Turn(LR.Right, 300);
     }
 }
