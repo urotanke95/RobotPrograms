@@ -19,6 +19,9 @@ int main(void)
     char filename[ 20 ];
     char buf[ 10 ];
     int  res;
+    // set signal handler
+    signal(SIGINT, quit_func);
+
     // I2Cデータバスをオープン
     sprintf(filename, "/dev/i2c-1");
 
@@ -118,22 +121,15 @@ int main(void)
             exit(1);
         }
         range2 |= buf[ 0 ];
+
+        printf("0xE2 range = %d\n", range1);
+        printf("0xE6 range = %d\n", range2);
     }
 
     close(fd1);
     close(fd2);
 
     return 0;
-}
-
-int get_left()
-{
-    return range1;
-}
-
-int get_right()
-{
-    return range2;
 }
 
 void quit_func()
