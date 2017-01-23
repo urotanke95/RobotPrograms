@@ -16,7 +16,8 @@ int main(void)
     char filename[ 20 ];
     char buf[ 10 ];
     int  res;
-    int  range = 0;
+    int  range1 = 0;
+    int  range2 = 0;
 
     // set signal handler
     signal(SIGINT, quit_func);
@@ -42,14 +43,14 @@ int main(void)
         exit(1);
     }
 
-    if (ioctl(fd2, I2C_SLAVE, (0xE2 >> 1) ) < 0) {  // 0xE0(0x11100000) >> 1 = 0x70(0x01110000)
-        printf("Error on slave address 0xE2\n");
+    if (ioctl(fd2, I2C_SLAVE, (0xE6 >> 1) ) < 0) {  // 0xE0(0x11100110) >> 1 = 0x73(0x01110011)
+        printf("Error on slave address 0xE6\n");
         exit(1);
     }
 
     while (!quit_flg)
     {
-        //一つ目
+        // 一つ目
         // read from 0xE2
         buf[ 0 ] = 0x00;
         buf[ 1 ] = 0x51;
@@ -71,7 +72,7 @@ int main(void)
             printf("0xE2 Error on read the Range High Byte\n");
             exit(1);
         }
-        range = buf[ 0 ] << 8;
+        range1 = buf[ 0 ] << 8;
 
         buf[ 0 ] = 0x03;
         if ( (write(fd1, buf, 1) ) != 1) {
@@ -83,14 +84,46 @@ int main(void)
             printf("0xE2 Error on read the Range Low Byte\n");
             exit(1);
         }
-        range |= buf[ 0 ];
+        range1 |= buf[ 0 ];
 
-        printf("0xE2 Range=%d cm\n", range);
-        if (range <= 10) {
-            g_stop();
-        } else {
-            g_go_straight(1, range);
+        // 二つ目
+        // read from 0xE2
+        buf[ 0 ] = 0x00;
+        buf[ 1 ] = 0x51;
+
+        if ( (write(fd2, buf, 2) ) != 2) {
+            printf("0xE6 Error send the read command\n");
+            exit(1);
         }
+        // Wait for the measurement
+        usleep(66000);
+
+        buf[ 0 ] = 0x02;
+        if ( (write(fd2, buf, 1) ) != 1) {
+            printf("0xE6 Error on select the Range High Byte\n");
+            exit(1);
+        }
+
+        if ( (read(fd2, buf, 1) ) != 1) {
+            printf("0xE6 Error on read the Range High Byte\n");
+            exit(1);
+        }
+        range2 = buf[ 0 ] << 8;
+
+        buf[ 0 ] = 0x03;
+        if ( (write(fd2, buf, 1) ) != 1) {
+            printf("0xE6 Error on select the Range Low Byte\n");
+            exit(1);
+        }
+
+        if ( (read(fd2, buf, 1) ) != 1) {
+            printf("0xE6 Error on read the Range Low Byte\n");
+            exit(1);
+        }
+        range2 |= buf[ 0 ];
+
+        printf("0xE2 range = %d\n", range1);
+        printf("0xE6 range = %d\n", range2);
     }
 
     close(fd1);
