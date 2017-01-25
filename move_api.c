@@ -205,7 +205,7 @@ void right_wheel(struct ccmd *cmd, unsigned short speed)
 {
     unsigned short a = WHEEL_ZERO;
 
-    a  += speed;
+    a  += -speed;
     a <<= 5;
 
     cmd->offset[2] = a;
