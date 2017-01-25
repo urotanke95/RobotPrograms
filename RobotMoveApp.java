@@ -2,9 +2,11 @@ class RobotMoveApp implements IApplication {
     public void Start(){
         Robot.Init();
         System.out.println("Robot Ready !");
+        AudioLib.INSTANCE.play("TestMove.wav");
     }
 
     public void Quit(){
+        AudioLib.INSTANCE.play("EndTestMove.wav");
         Robot.Stop();
         Robot.Quit();
     }

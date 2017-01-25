@@ -68,5 +68,6 @@ class Core implements ICore {
 
     static void quitCore(){
         quit_ = true;
+        AudioLib.INSTANCE.play("Bye.wav");
     }
 }
