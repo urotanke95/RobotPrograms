@@ -19,7 +19,7 @@ class Core implements ICore {
         sensorThread.start();
 
         while(!quit_){
-            if(CollisionSensor.GetLeft() <= STOP_DISTANCE && CollisionSensor.GetRight()<=STOP_DISTANCE){
+            if(needAvoid()){
                 System.out.println("something is in front. STOP APP");
                 stopApp();
             }
@@ -69,7 +69,11 @@ class Core implements ICore {
 
     static void quitCore(){
         if(nowApp_!=null)stopApp();
-        quit_ = true;
         AudioLib.INSTANCE.play("Bye.wav");
+        quit_ = true;
+    }
+
+    static boolean needAvoid(){
+        return (CollisionSensor.GetLeft() <= STOP_DISTANCE) && (CollisionSensor.GetRight()<=STOP_DISTANCE);
     }
 }
