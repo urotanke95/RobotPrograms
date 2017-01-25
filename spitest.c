@@ -13,7 +13,7 @@ int main(int argc, char **argv){
     int a2dChannel = atoi(argv[1]);  // analog channel
     int a2dVal = 0;
     float a2dVol = 0;
-    float Vref = 3.3;
+    float Vref = 5;
 		
 		printf("Channel:%d\n", a2dChannel);
     unsigned char data[3];

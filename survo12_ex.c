@@ -13,7 +13,8 @@ int main(){
 	pinMode(12,PWM_OUTPUT);
 	pwmSetMode(PWM_MODE_MS);
 	pwmSetClock(375);
-	pwmSetRange(1024);
+ 	pwmSetRange(1024);
+	printf("open, close, end, stop, or auto\n");
 
 	while(1){
 		int num;
