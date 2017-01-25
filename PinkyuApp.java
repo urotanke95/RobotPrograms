@@ -1,18 +1,18 @@
 public class PinkyuApp implements IApplication {
 	PinkyuTester pinkyu1;
-	ServoLib servolib;
+	SurvoLib survolib;
 	int x, y;
 	public void Start() {
 		pinkyu1 = new PinkyuTester();
-		servolib = new ServoLib();
+		survolib = new SurvoLib();
 		pinkyu1.main(null);
-		servolib.main(null);
+		survolib.main(null);
 	}
 	
-	public void Quit() {
-		pinkyu1 = null;
-		servolib = null;
-	}
+	public void Quit()  {
+		pinkyu1 = null;  
+		survolib = null;
+	}  
 	
 	public void Update() {
 		

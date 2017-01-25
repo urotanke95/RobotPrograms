@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include <string.h>
+#include <unistd.h>
 
 int main(){
 
@@ -15,23 +16,34 @@ int main(){
 	pwmSetRange(1024);
 
 	while(1){
-  	int num;
-    //int duty = 75;
+		int num;
+		//int duty = 75;
 		char com[8];
 		scanf("%s",com);
-	  //printf("%s\n",num);
+		//printf("%s\n",num);
 		if (strcmp(com, "open") == 0) {
-			printf("open arm");
+ 			printf("open arm\n");
 			pwmWrite(12, 125); //アームが開く
 		} else if(strcmp(com, "close") == 0) {
-			printf("close arm");
+			printf("close arm\n");
 			pwmWrite(12, 25); //アームが閉じる
-		} else if(stdcmp(com, "pause") == 0) {
-			printf("pause movement");
+		} else if(strcmp(com, "stop") == 0) {
+			printf("stop movement\n");
 			pwmWrite(12, 75); //一時停止
-		} else if(stdcmp(com, "end") == 0) {
-			printf("end of program");
+		} else if(strcmp(com, "end") == 0) {
+			printf("end of program\n");
 			return 0; //終了
+		} else if(strcmp(com, "auto") == 0) {
+			printf("auto\n");
+			pwmWrite(12,125);
+			sleep(3);
+			pwmWrite(12,75);
+			sleep(1);
+			pwmWrite(12, 25);
+			sleep(3);
+			pwmWrite(12,75);
+			printf("auto finish");
+			return 0;
 		}
 	}
 	return 0;
