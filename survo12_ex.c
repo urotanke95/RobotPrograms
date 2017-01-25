@@ -16,14 +16,14 @@ void setup_survo() {
 	printf("open, close, end, stop, or auto\n");
 }
 
-void open() {
+void openArm() {
 	printf("open arm\n");
 	pwmWrite(12, 125); //アームが開く
 	sleep(5);
 	pwmWrite(12,75);
 }
 
-void close() {
+void closeArm() {
 	printf("close arm\n");
 	pwmWrite(12, 25); //アームが閉じる
 	sleep(5);

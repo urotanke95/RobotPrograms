@@ -6,7 +6,7 @@ public class PinkyuApp implements IApplication {
 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
 		SurvoLib.INSTANCE.setup_survo();
-		SurvoLib.INSTANCE.open(); //後で消す
+		SurvoLib.INSTANCE.openArm(); //後で消す
 		LiftLib.INSTANCE.setup_lift();
 	}
 	
