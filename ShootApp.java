@@ -5,6 +5,7 @@ public class ShootApp implements IApplication {
 	public void Start() {
 		//armup
 		shooter = new Shooter();
+		AudioLib.INSTANCE.play("Hassha.wav");
 		shooter.main(null);
 	}
 	
