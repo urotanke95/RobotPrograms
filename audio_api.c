@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 
 #define  DSP  "/dev/dsp"
-#define  DIR_PATH  "/home/pi/work/robot/resources/"
+#define  DIR_PATH  "/home/pi/work/robot/RobotPrograms/resources/"
 #define  BUFFER  2048
 #define  STR_BUF 512
 
