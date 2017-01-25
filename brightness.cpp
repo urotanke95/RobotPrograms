@@ -17,8 +17,6 @@ int main(int, char**)
         Mat frame;
         cap >> frame; // カメラから新しいフレームを取得
         cv::cvtColor(frame, edges, CV_BGR2GRAY);
-        cv::GaussianBlur(edges, edges, Size(7,7), 1.5, 1.5);
-        cv::Canny(edges, edges, 0, 30, 3);
         imshow("edges", edges);
         if(waitKey(30) >= 0) break;
     }
