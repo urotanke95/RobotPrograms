@@ -1,5 +1,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 using namespace cv;
 
@@ -15,9 +16,7 @@ int main(int, char**)
     {
         Mat frame;
         cap >> frame; // カメラから新しいフレームを取得
-        cvtColor(frame, edges, CV_BGR2GRAY);
-        GaussianBlur(edges, edges, Size(7,7), 1.5, 1.5);
-        Canny(edges, edges, 0, 30, 3);
+        cv::cvtColor(frame, edges, CV_BGR2GRAY);
         imshow("edges", edges);
         if(waitKey(30) >= 0) break;
     }
