@@ -29,6 +29,7 @@ class Core implements ICore {
         }
         thread.stop();
         System.out.println("BYE");
+        System.exit(0);
     }
 
     public void Order(List<JuliusWord> jwl){
