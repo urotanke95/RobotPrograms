@@ -1,9 +1,9 @@
 public class AudioLibTester{
     public static void main(String[] args) {
         System.out.println("AudioLibTester");
-        MoveLib audioLib = AudioLib.INSTANCE;
+        AudioLib audioLib = AudioLib.INSTANCE;
         String s = "Hello_jp.wav";
-        moveLib.play(s);
-    
+        audioLib.play(s);
+
     }
 }

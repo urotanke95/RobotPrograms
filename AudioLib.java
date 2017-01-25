@@ -7,5 +7,5 @@ public interface AudioLib extends Library {
     AudioLib INSTANCE = (AudioLib) Native.loadLibrary(path, AudioLib.class);
 
     // Cの関数名と一致させる
-    void play(char *filename);
+    void play(String filename);
 }
