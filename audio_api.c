@@ -23,7 +23,7 @@ int  play(char *filename)
 	char buf[STR_BUF];
 
     /* --- フルパスの作成 --- */
-	sprintf(buf,"%s%s",DIR_PATH,filena);
+	sprintf(buf,"%s%s",DIR_PATH,filename);
     printf("%s\n", buf);
 
   /* --- デバイスのオープン */
