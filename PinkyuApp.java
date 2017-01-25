@@ -5,6 +5,7 @@ public class PinkyuApp implements IApplication {
 	public void Start() {
 		pinkyu1 = new PinkyuTester();
 		survolib = new SurvoLib();
+		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
 		survolib.main(null);
 	}
