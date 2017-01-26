@@ -117,6 +117,7 @@ int close(){ //Arm catch or close. When error, return -1
 		usleep(SLEEP);
 	}
 	pwmWrite(SURVO_OUT, 75);
+	
 	return 0;
 }
 
