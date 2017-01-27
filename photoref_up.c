@@ -7,6 +7,7 @@
 #define SS_PORT 8
 #define THRESHOLD 1500
 #define TERM 3
+#define SLEEP 100000
 
 int main(int argc, char **argv){
     int retCode;
@@ -52,6 +53,6 @@ int main(int argc, char **argv){
 		} else {
 			count = 0;
 		}
-        usleep(10000);
+        usleep(SLEEP);
     }
 }
