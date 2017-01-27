@@ -5,17 +5,15 @@ public class PinkyuApp implements IApplication {
 		pinkyu1 = new PinkyuTester();
 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
-		SurvoLib.INSTANCE.setup_survo();
-		SurvoLib.INSTANCE.openArm(); //delete later
-		SurvoLib.INSTANCE.closeArm();//delete later
-		LiftLib.INSTANCE.setup_lift();
+		ArmLib.INSTANCE.open();
+		//ArmLib.INSTANCE.lower();
+		ArmLib.INSTANCE.close();
+		//ArmLib.INSTANCE.raise();
 	}
 	
 	public void Quit()  {
-		AudioLib.INSTANCE.play("EndTestMove.wav");
-		pinkyu1 = null;  
-		SurvoLib.INSTANCE.stop();
-		LiftLib.INSTANCE.stop();
+		AudioLib.INSTANCE.play("MutekiSaikyo.wav");
+		pinkyu1 = null;
 	}  
 	
 	public void Update() {
@@ -28,8 +26,7 @@ public class PinkyuApp implements IApplication {
 	
 	public void Order(String word) {
 		if (word.equals("pick")) {
-			SurvoLib.INSTANCE.closeArm();
-			//LiftLib.INSTANCE.down();
+			ArmLib.INSTANCE.close();
 		}
 		
 	}
