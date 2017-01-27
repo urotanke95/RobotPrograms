@@ -6,7 +6,8 @@ public class PinkyuApp implements IApplication {
 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
 		SurvoLib.INSTANCE.setup_survo();
-		SurvoLib.INSTANCE.openArm(); //後で消す
+		SurvoLib.INSTANCE.openArm(); //delete later
+		SurvoLib.INSTANCE.closeArm();//delete later
 		LiftLib.INSTANCE.setup_lift();
 	}
 	
@@ -27,7 +28,7 @@ public class PinkyuApp implements IApplication {
 	
 	public void Order(String word) {
 		if (word.equals("pick")) {
-			SurvoLib.INSTANCE.close();
+			SurvoLib.INSTANCE.closeArm();
 			//LiftLib.INSTANCE.down();
 		}
 		
