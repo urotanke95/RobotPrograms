@@ -30,7 +30,7 @@ int main(int, char**)
                 max_y = y;
             }
         }
-        printf("max is %d at <%d,%d>\n", max_intensity,max_x,max_y);
+        printf("max is %d at %d,%d\n", max_intensity,max_x,max_y);
         imshow("brightness", brightness);
         if(waitKey(30) >= 0) break;
     }
