@@ -1,40 +1,19 @@
 #include <wiringPi.h>
 #include <stdio.h>
 
-int main()
+void start_moter()
 {
   int input;
 
   if (wiringPiSetupGpio() == -1)
-    return 1;
-	
-  while (1) {
+    return;
 
-    printf("Please input 1 to shoot the ball\n");
-    scanf("%d", &input);
+  pinMode( 04, OUTPUT );
+  digitalWrite(04, 1);
+}
 
-    if (input == 1) {
-      pinMode( 04, OUTPUT );
 
-      digitalWrite(04, 1);
-      delay(5000);
-      digitalWrite(04, 0);
-      delay(3000);
-      digitalWrite(04, 1);
-      break;
-    }else
-      continue;
-  }
-
-  while (1) {
-    printf("Please input 0 to stop the motors\n");
-    scanf("%d", &input);
-    if (input == 0) {
-      digitalWrite(04, 0);
-      break;
-    }else
-      continue;
-  }
-
-  return 0;
+void stop_moter()
+{
+	digitalWrite(04, 0);
 }
