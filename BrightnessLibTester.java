@@ -5,6 +5,7 @@ class BrightnessLibTester {
         System.out.println("BrightnessLibTester");
         BrightnessLib brightnessLib = BrightnessLib.INSTANCE;
 
+        brightnessLib.start_capture();
         while(true){
             int x = brightnessLib.get_vec_x();
             int y = brightnessLib.get_vec_y();
