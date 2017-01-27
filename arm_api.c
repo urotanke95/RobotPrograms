@@ -169,7 +169,8 @@ int lower(){ //Lift get down. When error, return -1
     int a2dVal = 0;
     unsigned char data[3];
 	if (wiringPiSPISetup(0, 1000000) < 0) {
-     	printf("SPISetup failed\n");
+		perror("SPI");
+		printf("SPISetup failed\n");
 		return -1;
     }
 	if (wiringPiSetupGpio() == -1) {
@@ -206,7 +207,6 @@ int lower(){ //Lift get down. When error, return -1
 		}
 		usleep(SLEEP);
 	}
-	printf("End\n");
 	digitalWrite(MOTOR_OUT1, 0);
 	return 0;
 }
@@ -233,7 +233,7 @@ int main(){
 	char str[512] = {};
 	while(1) {
 		memset(str, 0, sizeof(str));
-		scanf("%s" str);
+		scanf("%s",str);
 		if (strcmp("o", str) == 0) {
 			open();	
 		} else if (strcmp("c", str) == 0) {
