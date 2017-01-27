@@ -35,7 +35,7 @@ int main(int, char**)
         }
         printf("max is %d at %d,%d\n", max_intensity,max_x,max_y);
         // 直線の描画(画像，始点，終点，色，線幅、連結する近傍数)
-	    line(frame, Point(100, 100), Point(200, 200), Scalar(0,0,250), 3, 4);
+	    line(brightness, Point(100, 100), Point(200, 200), Scalar(0,0,250), 3, 4);
         imshow("brightness", brightness);
         if(waitKey(30) >= 0) break;
     }
