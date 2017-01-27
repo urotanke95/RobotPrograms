@@ -9,7 +9,11 @@ class BrightnessLibTester {
             int x = brightnessLib.get_vec_x();
             int y = brightnessLib.get_vec_y();
             System.out.println("x = " + x + ", y = "+ y);
-            Thread.sleep(1000);
+            try{
+                Thread.sleep(1000);
+            }catch(Exception e){
+                System.out.println(e);
+            }
         }
     }
 }
