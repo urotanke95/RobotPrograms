@@ -1,27 +1,27 @@
 public class ShootApp implements IApplication {
-	//ArmApp armer;
-	Shooter shooter;
-	
+
 	public void Start() {
-		//armup
-		shooter = new Shooter();
 		AudioLib.INSTANCE.play("Hassha.wav");
-		shooter.main(null);
 	}
-	
+
 	public void Quit() {
-		shooter = null;
+		return 0;
 	}
-	
+
 	public void Update() {
-		
+		return 0;
 	}
-	
+
 	public int Cleanup() {
 		return 0;
 	}
-	
+
 	public void Order(String word) {
 		System.out.println(word);
+		if (word.equals("uchikorose"))
+			Shooter.shoot();
+
+		if (word.equals("yamete"))
+			Shooter.stop_shoot();
 	}
 }

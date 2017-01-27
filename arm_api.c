@@ -230,9 +230,10 @@ int stop(){ //Lift get down. When error, return -1
 }	
 	
 int main(){
-	char str[512];
+	char str[512] = {};
 	while(1) {
 		memset(str, 0, sizeof(str));
+		scanf("%s" str);
 		if (strcmp("o", str) == 0) {
 			open();	
 		} else if (strcmp("c", str) == 0) {
