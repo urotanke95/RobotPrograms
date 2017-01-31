@@ -10,11 +10,11 @@ int target_y = 0;
 int window_x_center = 0;
 int window_y_max = 0;
 
-int start_capture()
+int main()
 {
     VideoCapture cap(0); // デフォルトカメラをオープン
     if(!cap.isOpened())  // 成功したかどうかをチェック
-        return -1;
+       return -1;
 
     Mat brightness;
     window_x_center = brightness.cols/2;
