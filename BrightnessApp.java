@@ -17,13 +17,13 @@ class BrightnessApp implements IApplication {
         int x = BrightnessLib.INSTANCE.get_vec_x();
         int y = BrightnessLib.INSTANCE.get_vec_y();
         if(x > threshold){
-            Robot.Turn(LR.R, x);
+            Robot.Turn(LR.right, x);
         }else if(x < -threshold){
-            Robot.Turn(LR.L, -x);
+            Robot.Turn(LR.left, -x);
         }else if(y < threshold){
-                
+
         }else{
-            Robot.Move(FB.F, y);
+            Robot.Move(FB.front, y);
         }
     }
 
