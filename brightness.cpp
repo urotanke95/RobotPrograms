@@ -9,6 +9,7 @@ int target_x = 0;
 int target_y = 0;
 int window_x_center = 0;
 int window_y_max = 0;
+int quit_brightness = 0;
 
 int main()
 {
@@ -45,6 +46,7 @@ int main()
 	    line(brightness, Point(window_x_center, window_y_max), Point(target_x, target_y), Scalar(0,0,250), 3, 4);
         imshow("brightness", brightness);
         if(waitKey(30) >= 0) break;
+        if(quit_brightness != 0) break;
     }
     // VideoCapture デストラクタにより，カメラは自動的に終了処理されます
     return 0;
@@ -56,4 +58,7 @@ int get_vec_x(){
 int get_vec_y(){
     // 座標系の関係で順番が逆
     return window_y_max - target_y;
+}
+void quit(){
+    quit_brightness = 1;
 }

@@ -10,4 +10,5 @@ public interface BrightnessLib extends Library {
     void main();
     int get_vec_x();
     int get_vec_y();
+    void quit();
 }
