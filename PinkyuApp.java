@@ -5,9 +5,9 @@ public class PinkyuApp implements IApplication {
 		pinkyu1 = new PinkyuTester();
 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
-		ArmLib.INSTANCE.open();
+		ArmLib.INSTANCE.arm_open();
 		//ArmLib.INSTANCE.lower();
-		ArmLib.INSTANCE.close();
+		ArmLib.INSTANCE.arm_close();
 		//ArmLib.INSTANCE.raise();
 	}
 
@@ -26,7 +26,7 @@ public class PinkyuApp implements IApplication {
 
 	public void Order(String word) {
 		if (word.equals("pick")) {
-			ArmLib.INSTANCE.close();
+			ArmLib.INSTANCE.arm_close();
 		}
 
 	}
