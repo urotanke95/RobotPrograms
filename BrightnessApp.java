@@ -1,5 +1,6 @@
 class BrightnessApp implements IApplication {
     static final int threshold = 10;
+    private boolean quit = false;
     public void Start(){
         Robot.Init();
         System.out.println("Brightness Ready !");
@@ -19,6 +20,8 @@ class BrightnessApp implements IApplication {
             Robot.Turn(LR.R, x);
         }else if(x < -threshold){
             Robot.Turn(LR.L, -x);
+        }else if(y < threshold){
+                
         }else{
             Robot.Move(FB.F, y);
         }
@@ -30,5 +33,9 @@ class BrightnessApp implements IApplication {
     }
 
     public void Order(String word){
+    }
+
+    public boolean IsRunning(){
+        return !quit;
     }
 }
