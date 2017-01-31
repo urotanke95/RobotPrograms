@@ -29,6 +29,7 @@ int main()
         window_y_max = brightness.rows;
         unsigned char intensity = 0;
 
+        max_intensity = 0;
         for( int y = 0; y < brightness.rows; y++ ) {
             for( int x = 0; x < brightness.cols; x++ ) {
                 intensity = brightness.at<unsigned char>(y, x); //X座標がx, Y座標がyに位置するピクセルの値を取得
