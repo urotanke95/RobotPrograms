@@ -7,7 +7,7 @@ public interface BrightnessLib extends Library {
     BrightnessLib INSTANCE = (BrightnessLib) Native.loadLibrary(path, BrightnessLib.class);
 
     // Cの関数名と一致させる
-    int start_capture();
+    void main();
     int get_vec_x();
     int get_vec_y();
 }
