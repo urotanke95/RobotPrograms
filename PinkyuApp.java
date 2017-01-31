@@ -10,24 +10,27 @@ public class PinkyuApp implements IApplication {
 		ArmLib.INSTANCE.close();
 		//ArmLib.INSTANCE.raise();
 	}
-	
+
 	public void Quit()  {
 		AudioLib.INSTANCE.play("MutekiSaikyo.wav");
 		pinkyu1 = null;
-	}  
-	
-	public void Update() {
-		
 	}
-	
+
+	public void Update() {
+
+	}
+
 	public int Cleanup() {
 		return 0;
 	}
-	
+
 	public void Order(String word) {
 		if (word.equals("pick")) {
 			ArmLib.INSTANCE.close();
 		}
-		
+
 	}
+    public boolean IsRunning(){
+        return true;
+    }
 }

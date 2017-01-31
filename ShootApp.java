@@ -24,4 +24,7 @@ public class ShootApp implements IApplication {
 		if (word.equals("yamete"))
 			Shooter.stop_shoot();
 	}
+    public boolean IsRunning(){
+        return true;
+    }
 }

@@ -26,4 +26,7 @@ class RobotMoveApp implements IApplication {
         if(word.equals("left"))Robot.Turn(LR.Left, 300);
         if(word.equals("right"))Robot.Turn(LR.Right, 300);
     }
+    public boolean IsRunning(){
+        return true;
+    }
 }
