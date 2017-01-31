@@ -17,8 +17,7 @@ int main()
        return -1;
 
     Mat brightness;
-    window_x_center = brightness.cols/2;
-    window_y_max = brightness.rows;
+
 
     namedWindow("brightness",1);
     for(;;)
@@ -26,12 +25,13 @@ int main()
         Mat frame;
         cap >> frame; // カメラから新しいフレームを取得
         cv::cvtColor(frame, brightness, CV_BGR2GRAY);
-
+        window_x_center = brightness.cols/2;
+        window_y_max = brightness.rows;
         unsigned char intensity = 0;
 
-        for( int y = 0; y < frame.rows; y++ ) {
-            for( int x = 0; x < frame.cols; x++ ) {
-                intensity = frame.at<unsigned char>(y, x); //X座標がx, Y座標がyに位置するピクセルの値を取得
+        for( int y = 0; y < brightness.rows; y++ ) {
+            for( int x = 0; x < brightness.cols; x++ ) {
+                intensity = brightness.at<unsigned char>(y, x); //X座標がx, Y座標がyに位置するピクセルの値を取得
                 if(intensity <= max_intensity){continue;}
                 // intensity is more than max_intensity
                 max_intensity = intensity;
