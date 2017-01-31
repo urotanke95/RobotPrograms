@@ -19,4 +19,7 @@ class TestApp implements IApplication {
     public void Order(String word){
         System.out.println(word);
     }
+    public boolean IsRunning(){
+        return true;
+    }
 }

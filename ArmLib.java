@@ -7,8 +7,12 @@ public interface ArmLib extends Library {
     ArmLib INSTANCE = (ArmLib) Native.loadLibrary(path, ArmLib.class);
 
     // 基本的に正常:0 エラー:-1
-	int open();
-	int close(); 
+	int init();
+	int arm_open();
+	int arm_close(); 
+	int arm_fclose(); 
 	int raise();
 	int lower();
+	int stop();
+	int quit();
 }

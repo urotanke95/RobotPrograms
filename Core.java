@@ -5,6 +5,7 @@ class Core implements ICore {
     private static IApplication nowApp_;
     private static boolean quit_ = false;
     private static boolean isRunApp_ = false;
+    private static boolean isWillStopApp = false;
     private static final int STOP_DISTANCE = 50;
 
     public static void main(String[] args){
@@ -19,14 +20,22 @@ class Core implements ICore {
         sensorThread.start();
 
         while(!quit_){
+            if(!isRunApp_) continue;
+            if(nowApp_==null) continue;
             if(needAvoid()){
+                // 正面に何かあった場合
                 System.out.println("something is in front. STOP APP");
                 stopApp();
+            } else if (isWillStopApp){
+                // アプリケーションを終了するフラグが立っている場合
+                stopApp();
+                isWillStopApp = false;
+            }else{
+                // アプリケーションが動作中
+                nowApp_.Update();
             }
-            if(nowApp_==null) continue;
-            if(!isRunApp_) continue;
-            nowApp_.Update();
         }
+        stopApp();
         thread.stop();
         System.out.println("BYE");
         System.exit(0);
@@ -37,9 +46,9 @@ class Core implements ICore {
             String word = jw.Word_;
             if(word.equals("silE")) return;
             else if(word.equals("end")) quitCore();
+            else if(word.equals("stop")) isWillStopApp = true;
             else if(word.equals("test")) startApp(new TestApp());
             else if(word.equals("move")) startApp(new RobotMoveApp());
-            else if(word.equals("stop")) stopApp();
 			else if(word.equals("pinkyu")) startApp(new PinkyuApp());
 			else if(word.equals("shoot")) startApp(new ShootApp());
             if(nowApp_!=null)nowApp_.Order(word);
@@ -68,7 +77,6 @@ class Core implements ICore {
     }
 
     static void quitCore(){
-        if(nowApp_!=null)stopApp();
         AudioLib.INSTANCE.play("Bye.wav");
         quit_ = true;
     }

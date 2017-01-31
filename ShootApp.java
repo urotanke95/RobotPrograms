@@ -21,4 +21,7 @@ public class ShootApp implements IApplication {
 		if (word.equals("uchikorose"))
 			ShooterLib.INSTANCE.start_moter();
 	}
+    public boolean IsRunning(){
+        return true;
+    }
 }
