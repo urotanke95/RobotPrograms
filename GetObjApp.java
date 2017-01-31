@@ -1,23 +1,15 @@
 public class GetObjApp implements IApplication {
 
-	void Start() {
-		if (ArmLib.INSTANCE.open() < 0) {
-			printf("Error\n");
-		}
+	private boolean working;
 
-		if (ArmLib.INSTANCE.raise() < 0) {
-			printf("Error\n");
-		}
+	void Start() {
+		ArmLib.INSTANCE.init();
+	//	AudioLib.INSTANCE.play("");
+		wroking = false;
 	}
     
 	void Quit() {
-		if (ArmLib.INSTANCE.open() < 0) {
-			printf("Error\n");
-		}
-
-		if (ArmLib.INSTANCE.raise() < 0) {
-			printf("Error\n");
-		}
+	
 	}
 
     void Update(){
@@ -29,34 +21,19 @@ public class GetObjApp implements IApplication {
 	}
     
 	void Order(String word){
+		if (word.equals("green")) {
+			ObjLib.INSTANCE.searchObj("green");
+		} else if (word.equals("red")) {
+			ObjLib.INSTANCE.searchObj("red");
+		} else if (word.equals("blue")) {
+			ObjLib.INSTANCE.searchObj("blue");
+		} else {
+			if (working) {
+				
+			} else {
+			
+			}
+		} 
+	}
 	
-	}
-
-	void search() {
-	
-	}
-
-	void pickUp() {
-		if (ArmLib.INSTANCE.lower() < 0) {
-			printf("Error\n");		
-		}
-		if (ArmLib.INSTANCE.close() < 0) {
-			printf("Error\n");		
-		}
-		if (ArmLib.INSTANCE.raise() < 0) {
-			printf("Error\n");		
-		}
-	}
-
-	void putDown() {
-		if (ArmLib.INSTANCE.lower() < 0) {
-			printf("Error\n");		
-		}
-		if (ArmLib.INSTANCE.open() < 0) {
-			printf("Error\n");		
-		}
-		if (ArmLib.INSTANCE.raise() < 0) {
-			printf("Error\n");		
-		}
-	}
 }
