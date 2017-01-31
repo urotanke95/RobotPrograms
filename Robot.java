@@ -35,10 +35,18 @@ public final class Robot {
         left_wheel_ = speed;
         moveLib_.g_left_wheel((char)left_wheel_);
     }
+    //左のホイールの回転速度を返す．
+    public static int GetLeft(){
+        return left_wheel_;
+    }
     //右のホイールの回転速度を指定する．移動中でも上書きされる．
     public static void SetRight(int speed){
         right_wheel_ = speed;
         moveLib_.g_right_wheel((char)right_wheel_);
+    }
+    //右のホイールの回転速度を返す．
+    public static int GetRight(){
+        return right_wheel_;
     }
     //終了処理．ロボットを使い終わったら必ず呼ぶ．
     public static void Quit(){
