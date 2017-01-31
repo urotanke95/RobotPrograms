@@ -1,11 +1,11 @@
 public class ShootApp implements IApplication {
 
 	public void Start() {
-		AudioLib.INSTANCE.play("Hassha.wav");
+	//	AudioLib.INSTANCE.play("Hassha.wav");
 	}
 
 	public void Quit() {
-		return;
+		ShooterLib.INSTANCE.stop_moter();
 	}
 
 	public void Update() {
@@ -20,8 +20,5 @@ public class ShootApp implements IApplication {
 		System.out.println(word);
 		if (word.equals("uchikorose"))
 			ShooterLib.INSTANCE.start_moter();
-
-		if (word.equals("yamete"))
-			ShooterLib.INSTANCE.stop_moter();
 	}
 }
