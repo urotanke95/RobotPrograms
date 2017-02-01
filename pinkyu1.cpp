@@ -192,7 +192,7 @@ int main()
 		// <<<<< Improving the result
 
 		// Thresholding viewing
-		cv::imshow("Threshold", rangeRes);
+		//cv::imshow("Threshold", rangeRes);
 
 		// >>>>> Contours detection
 		vector<vector<cv::Point> > contours;
@@ -257,10 +257,10 @@ int main()
 		}
 		
 		if (X > 0 && X < 260) {
-			g_turn(0,500);
+			g_turn(1,500);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
-			g_turn(1, 500);
+			g_turn(0, 500);
 			cout << "turn right" << endl;
 		} else if (Y <= 450) {
 			g_go_straight(1, 500);
@@ -327,7 +327,7 @@ int main()
 		// <<<<< Kalman Update
 
 		// Final result
-		cv::imshow("Tracking", res);
+		//cv::imshow("Tracking", res);
 
 		// User key
 		ch = cv::waitKey(1);
