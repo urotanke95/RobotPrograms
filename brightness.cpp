@@ -13,7 +13,7 @@ int quit_brightness = 0;
 Mat brightness;
 VideoCapture cap(0); // デフォルトカメラをオープン
 
-int main()
+int start_brightness()
 {
     if(!cap.isOpened())  // 成功したかどうかをチェック
        return -1;
@@ -23,7 +23,7 @@ int main()
     return 0;
 }
 
-void update(){
+void update_brightness(){
     Mat frame;
     cap >> frame; // カメラから新しいフレームを取得
     cv::cvtColor(frame, brightness, CV_BGR2GRAY);
@@ -55,6 +55,3 @@ int get_vec_y(){
     // 座標系の関係で順番が逆
     return window_y_max - target_y;
 }
-// void quit(){
-//     quit_brightness = 1;
-// }
