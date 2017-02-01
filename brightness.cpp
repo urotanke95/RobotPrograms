@@ -11,10 +11,12 @@ int window_x_center = 0;
 int window_y_max = 0;
 int quit_brightness = 0;
 Mat brightness;
-VideoCapture cap(0); // デフォルトカメラをオープン
+VideoCapture *capture;
 
-int start_brightness()
+extern "C" int start_brightness()
 {
+    VideoCapture cap(0); // デフォルトカメラをオープン
+    capture = &cap;
     if(!cap.isOpened())  // 成功したかどうかをチェック
        return -1;
 
@@ -23,9 +25,9 @@ int start_brightness()
     return 0;
 }
 
-void update_brightness(){
+extern "C" void update_brightness(){
     Mat frame;
-    cap >> frame; // カメラから新しいフレームを取得
+    *capture >> frame; // カメラから新しいフレームを取得
     cv::cvtColor(frame, brightness, CV_BGR2GRAY);
     window_x_center = brightness.cols/2;
     window_y_max = brightness.rows;
@@ -46,12 +48,21 @@ void update_brightness(){
     // 直線の描画(画像，始点，終点，色，線幅、連結する近傍数)
 	line(brightness, Point(window_x_center, window_y_max), Point(target_x, target_y), Scalar(0,0,250), 3, 4);
     imshow("brightness", brightness);
+    waitKey(30);
 }
 
-int get_vec_x(){
+extern "C" int get_vec_x(){
     return target_x - window_x_center;
 }
-int get_vec_y(){
+
+extern "C" int get_vec_y(){
     // 座標系の関係で順番が逆
     return window_y_max - target_y;
+}
+void main(){
+    start_brightness();
+    while(1){
+        update_brightness();
+        if(waitKey(0)>=0)break;
+    }
 }
