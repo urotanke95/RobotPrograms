@@ -1,18 +1,18 @@
 public class PinkyuApp implements IApplication {
-	int x, y;
-	public static void main(String[] args) {
-		PinkyuTester pinkyu1 = new PinkyuTester();
+	int x,y;
+	PinkyuTester pinkyu1;
+	public void Start() {
+		pinkyu1 = new PinkyuTester();
 		//AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main(null);
 	  SurvoLib.INSTANCE.openArm();	
 		//ArmLib.INSTANCE.lower();
-		SurvoLib.INSTANCE.closeArm();
-		//ArmLib.INSTANCE.raise();
-	}
-	public void Start(){}
+ 		SurvoLib.INSTANCE.closeArm();
+ 		//ArmLib.INSTANCE.raise();
+ }
 	public void Quit()  {
 		AudioLib.INSTANCE.play("MutekiSaikyo.wav");
-		//pinkyu1 = null;
+		pinkyu1 = null;
 	}
 
 	public void Update() {

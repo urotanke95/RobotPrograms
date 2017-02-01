@@ -5,7 +5,7 @@ import com.sun.jna.Native;
 public class PinkyuTester {
     public interface OpencvLib extends Library {
         // loadLibraryの第一引数はあとで作成するlib***.soの***と一致させる。
-        String path = "libpinkyu1.so";
+        String path = "/home/pi/work/robot/RobotPrograms/libpinkyu1.so";
         OpencvLib INSTANCE = (OpencvLib) Native.loadLibrary(path, OpencvLib.class);
 
         // Cの関数名と一致させる

@@ -192,7 +192,7 @@ int main()
 		// <<<<< Improving the result
 
 		// Thresholding viewing
-		cv::imshow("Threshold", rangeRes);
+		//cv::imshow("Threshold", rangeRes);
 
 		// >>>>> Contours detection
 		vector<vector<cv::Point> > contours;
@@ -327,7 +327,7 @@ int main()
 		// <<<<< Kalman Update
 
 		// Final result
-		cv::imshow("Tracking", res);
+		//cv::imshow("Tracking", res);
 
 		// User key
 		ch = cv::waitKey(1);

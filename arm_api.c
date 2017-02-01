@@ -8,8 +8,12 @@
 #define MOTOR_OUT2 15
 #define SS_PORT 8
 
+<<<<<<< HEAD
 #define SLEEP 10000
 #define SPI_CHANNEL 0
+=======
+#define SLEEP 3
+>>>>>>> 8395e74d11c8c99d4400de4cec7db7333f0a8926
 
 #define THRESHOLD_PR 1500
 #define RANGE_PR 50
@@ -60,7 +64,7 @@ int open(){ //Arm open completely. When error, return -1
 				count--;
 			}
 		}	
-		usleep(SLEEP);
+		sleep(SLEEP);
 	}
 	pwmWrite(SURVO_OUT, 75);
 	return 0;
@@ -115,7 +119,7 @@ int close(){ //Arm catch or close. When error, return -1
 			count = 0;
 		}
 		buff = a2dVal;
-		usleep(SLEEP);
+		sleep(SLEEP);
 	}
 	pwmWrite(SURVO_OUT, 75);
 	
@@ -160,7 +164,7 @@ int raise(){ //Lift rises. When error, return -1
 				count--;
 			}
 		}
-		usleep(SLEEP);
+		sleep(SLEEP);
 	}
 	digitalWrite(MOTOR_OUT2, 0);
 	return 0;
@@ -208,7 +212,7 @@ int lower(){ //Lift get down. When error, return -1
 				count--;
 			}
 		}
-		usleep(SLEEP);
+		sleep(SLEEP);
 	}
 	digitalWrite(MOTOR_OUT1, 0);
 	return 0;
