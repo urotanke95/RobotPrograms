@@ -257,10 +257,10 @@ int main()
 		}
 		
 		if (X > 0 && X < 260) {
-			g_turn(0,500);
+			g_turn(1,500);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
-			g_turn(1, 500);
+			g_turn(0, 500);
 			cout << "turn right" << endl;
 		} else if (Y <= 450) {
 			g_go_straight(1, 500);
