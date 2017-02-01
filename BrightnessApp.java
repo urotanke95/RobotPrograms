@@ -5,13 +5,14 @@ class BrightnessApp implements IApplication {
         Robot.Init();
         System.out.println("Brightness Ready !");
         AudioLib.INSTANCE.play("Brightness.wav");
-        BrightnessLib.INSTANCE.quit();
+        BrightnessLib.INSTANCE.main();
     }
 
     public void Quit(){
         AudioLib.INSTANCE.play("EndBrightness.wav");
         Robot.Stop();
         Robot.Quit();
+        BrightnessLib.INSTANCE.quit();
     }
 
     public void Update(){
