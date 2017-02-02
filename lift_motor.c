@@ -10,7 +10,7 @@
 void setup_lift() {
 	if ( wiringPiSetupGpio() == -1) {
 		printf("setup error");
-		return 1;		
+		return;		
 	}
 
 	pinMode(MOTOROUT1, OUTPUT);
@@ -21,10 +21,14 @@ void setup_lift() {
 
 void up() {
 	digitalWrite(MOTOROUT1, 1);
+	sleep(3);
+	digitalWrite(MOTOROUT1, 0);
 }
 
 void down() {
 	digitalWrite(MOTOROUT2, 1);
+	sleep(3);
+	digitalWrite(MOTOROUT2, 0);
 }
 
 void stop() {

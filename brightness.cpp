@@ -11,12 +11,14 @@ int window_x_center = 0;
 int window_y_max = 0;
 int quit_brightness = 0;
 Mat brightness;
-VideoCapture *capture;
+VideoCapture capture;
+
+
 
 extern "C" int start_brightness()
 {
     VideoCapture cap(0); // デフォルトカメラをオープン
-    capture = &cap;
+    capture = cap;
     if(!cap.isOpened())  // 成功したかどうかをチェック
        return -1;
 
@@ -27,7 +29,7 @@ extern "C" int start_brightness()
 
 extern "C" void update_brightness(){
     Mat frame;
-    *capture >> frame; // カメラから新しいフレームを取得
+    capture >> frame; // カメラから新しいフレームを取得
     cv::cvtColor(frame, brightness, CV_BGR2GRAY);
     window_x_center = brightness.cols/2;
     window_y_max = brightness.rows;
@@ -44,7 +46,7 @@ extern "C" void update_brightness(){
             target_y = y;
         }
     }
-    printf("max is %d at %d,%d\n", max_intensity,target_x,target_y);
+    //printf("max is %d at %d,%d\n", max_intensity,target_x,target_y);
     // 直線の描画(画像，始点，終点，色，線幅、連結する近傍数)
 	line(brightness, Point(window_x_center, window_y_max), Point(target_x, target_y), Scalar(0,0,250), 3, 4);
     imshow("brightness", brightness);
@@ -63,6 +65,5 @@ int main(){
     start_brightness();
     while(1){
         update_brightness();
-        if(waitKey(0)>=0)break;
     }
 }

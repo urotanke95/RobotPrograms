@@ -6,7 +6,7 @@
 void setup_survo() {
 	if (wiringPiSetupGpio() == -1) {
 		fprintf(stderr, "WiringPi Initialize Error\n");
-		return 0;
+		return;
 	}
 
 	pinMode(12,PWM_OUTPUT);
@@ -39,7 +39,7 @@ void end() {
 	printf("end of program\n");
 }
 
-void auto() {
+void automatic() {
 	printf("auto\n");
 	pwmWrite(12,125);
 	sleep(3);
@@ -51,4 +51,11 @@ void auto() {
 	printf("auto finish\n");
 }
 
+int main() {
+	
+	setup_survo();
 
+	openArm();
+
+	return 0;
+}

@@ -28,6 +28,7 @@
 
 
 using namespace std;
+extern "C"{
 
 // >>>>> Color to be tracked
 #define MIN_H_BLUE 30
@@ -327,7 +328,7 @@ extern "C" int main()
 		// <<<<< Kalman Update
 
 		// Final result
-		//cv::imshow("Tracking", res);
+		cv::imshow("Tracking", res);
 
 		// User key
 		ch = cv::waitKey(1);
@@ -336,4 +337,5 @@ extern "C" int main()
 	g_quit();
 	
 	return EXIT_SUCCESS;
+}
 }

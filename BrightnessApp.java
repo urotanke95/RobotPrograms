@@ -5,17 +5,17 @@ class BrightnessApp implements IApplication {
         Robot.Init();
         System.out.println("Brightness Ready !");
         AudioLib.INSTANCE.play("Brightness.wav");
-        BrightnessLib.INSTANCE.main();
+        BrightnessLib.INSTANCE.start_brightness();
     }
 
     public void Quit(){
         AudioLib.INSTANCE.play("EndBrightness.wav");
         Robot.Stop();
         Robot.Quit();
-        BrightnessLib.INSTANCE.quit();
     }
 
     public void Update(){
+        BrightnessLib.INSTANCE.update_brightness();
         int x = BrightnessLib.INSTANCE.get_vec_x();
         int y = BrightnessLib.INSTANCE.get_vec_y();
         if(x > threshold){

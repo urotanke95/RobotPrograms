@@ -34,7 +34,7 @@ public class Avoid {
 		left_sensor = Collision.Left;
 		right_sensor = Collision.Right;
 
-		while (left_sensor < right_sensor) {
+		if (left_sensor < right_sensor) {
 			left_sensor = Collision.Left;
 			right_sensor = Collision.Right;
 

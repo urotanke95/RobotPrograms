@@ -5,11 +5,11 @@ public class ShootApp implements IApplication {
 	}
 
 	public void Quit() {
-		return 0;
+		ShooterLib.INSTANCE.stop_moter();
 	}
 
 	public void Update() {
-		return 0;
+		return;
 	}
 
 	public int Cleanup() {
@@ -19,10 +19,7 @@ public class ShootApp implements IApplication {
 	public void Order(String word) {
 		System.out.println(word);
 		if (word.equals("uchikorose"))
-			Shooter.shoot();
-
-		if (word.equals("yamete"))
-			Shooter.stop_shoot();
+			ShooterLib.INSTANCE.start_moter();
 	}
     public boolean IsRunning(){
         return true;

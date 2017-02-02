@@ -8,7 +8,12 @@
 #define MOTOR_OUT2 15
 #define SS_PORT 8
 
+<<<<<<< HEAD
+#define SLEEP 10000
+#define SPI_CHANNEL 0
+=======
 #define SLEEP 3
+>>>>>>> 8395e74d11c8c99d4400de4cec7db7333f0a8926
 
 #define THRESHOLD_PR 1500
 #define RANGE_PR 50
@@ -22,9 +27,9 @@
 int open(){ //Arm open completely. When error, return -1
     int a2dVal = 0;
     unsigned char data[3];
-	if (wiringPiSPISetup(0, 1000000) < 0) {
+	if (wiringPiSPISetup(SPI_CHANNEL, 1000000) < 0) {
      	printf("SPISetup failed\n");
-		return -1;
+			return -1;
     }
 	if (wiringPiSetupGpio() == -1) {
 		fprintf(stderr, "WiringPi Initialize Error\n");
@@ -45,7 +50,7 @@ int open(){ //Arm open completely. When error, return -1
         data[1] = 0b00000000;
 		data[2] = 0;
 		digitalWrite(SS_PORT, 0);
-		wiringPiSPIDataRW (0,data,sizeof(data));
+		wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
@@ -68,7 +73,7 @@ int open(){ //Arm open completely. When error, return -1
 int close(){ //Arm catch or close. When error, return -1
     int a2dVal = 0, buff = 0;
     unsigned char data[3];
-	if (wiringPiSPISetup(0, 1000000) < 0) {
+	if (wiringPiSPISetup(SPI_CHANNEL, 1000000) < 0) {
      	printf("SPISetup failed\n");
 		return -1;
     }
@@ -91,7 +96,7 @@ int close(){ //Arm catch or close. When error, return -1
         data[1] = 0b00000000;
 		data[2] = 0;
 		digitalWrite(SS_PORT, 0);
-		wiringPiSPIDataRW (0, data,sizeof(data));
+		wiringPiSPIDataRW (SPI_CHANNEL, data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
@@ -124,7 +129,7 @@ int close(){ //Arm catch or close. When error, return -1
 int raise(){ //Lift rises. When error, return -1
     int a2dVal = 0;
     unsigned char data[3];
-	if (wiringPiSPISetup(0, 1000000) < 0) {
+	if (wiringPiSPISetup(SPI_CHANNEL, 1000000) < 0) {
      	printf("SPISetup failed\n");
 		return -1;
     }
@@ -145,7 +150,7 @@ int raise(){ //Lift rises. When error, return -1
         data[1] = 0b00000000;
 		data[2] = 0;
 		digitalWrite(SS_PORT, 0);
-		wiringPiSPIDataRW (0,data,sizeof(data));
+		wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
@@ -166,16 +171,19 @@ int raise(){ //Lift rises. When error, return -1
 }
 
 int lower(){ //Lift get down. When error, return -1
-    int a2dVal = 0;
-    unsigned char data[3];
-	if (wiringPiSPISetup(0, 1000000) < 0) {
-     	printf("SPISetup failed\n");
+  int a2dVal = 0;
+  unsigned char data[3];
+	fprintf(stderr, "here\n");
+	if (wiringPiSPISetup(SPI_CHANNEL, 1000000) < 0) {
+		printf("SPISetup failed\n");
 		return -1;
-    }
+  }
+	fprintf(stderr, "er\n");
 	if (wiringPiSetupGpio() == -1) {
 		fprintf(stderr, "WiringPi Initialize Error\n");
 		return -1;
 	}
+	fprintf(stderr, "her\n");
 	pinMode(MOTOR_OUT1, OUTPUT);
 	pinMode(MOTOR_OUT2, OUTPUT);
 	pinMode(SS_PORT, OUTPUT);
@@ -190,7 +198,7 @@ int lower(){ //Lift get down. When error, return -1
         data[1] = 0b00000000;
 		data[2] = 0;
 		digitalWrite(SS_PORT, 0);
-		wiringPiSPIDataRW (0,data,sizeof(data));
+		wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
@@ -206,7 +214,6 @@ int lower(){ //Lift get down. When error, return -1
 		}
 		sleep(SLEEP);
 	}
-	printf("End\n");
 	digitalWrite(MOTOR_OUT1, 0);
 	return 0;
 }
@@ -230,10 +237,10 @@ int stop(){ //Lift get down. When error, return -1
 }	
 	
 int main(){
-	char str[512] = {};
+	char str[512];
 	while(1) {
 		memset(str, 0, sizeof(str));
-		scanf("%s" str);
+		scanf("%s",str);
 		if (strcmp("o", str) == 0) {
 			open();	
 		} else if (strcmp("c", str) == 0) {
