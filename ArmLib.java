@@ -13,7 +13,7 @@ public interface ArmLib extends Library {
 	int arm_fclose(); 
 	int raise();
 	int lower();
-	int lower_t(int time);
-	int stop();
-	int quit();
+	int lower_t(int clock);
+	void stop();
+	void quit();
 }

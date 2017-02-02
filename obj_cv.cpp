@@ -9,17 +9,23 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <sys/stat.h>
-#include <sys/types.h>
-//#include "move_api.h"
+#include <string.h>
+#include "move_api.h"
 
 #define CAMERA_U_IDX 0
 #define CAMERA_F_IDX 0
-#define PIX_LEN 300
+#define NFC 3 //NotFoundCount Threshold
+#define FC 3 //FoundCount Threshold
+#define TURN_S 500
+#define STRAIGHT_S 500
+#define STRAIGHT_SLOW 200
 
 using namespace cv;
 using namespace cv::face;
 using namespace std;
+
+int AREA_TS = 307200 * 0.8;
+int AREA_SLOW = 307200 * 0.6;
 
 string fn_haar = "/usr/local/Cellar/opencv3/3.2.0/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml";
 string fn_csv = "/Users/okuokakouhei/java/eclipse/RobotCV/face.csv";
@@ -44,11 +50,26 @@ extern "C" static void read_csv(const string& filename, vector<Mat>& images, vec
 }
 
 extern "C" int searchObj(char* color) {
-	 // >>>> Kalman Filter
+	cv::Scalar max;
+	cv::Scalar min;
+	if (strcmp(color, "Yellow") == 0) {
+		min = cv::Scalar(40, 100, 160);
+		max = cv::Scalar(70, 255, 255);
+	} else if (strcmp(color, "Blue") == 0) {
+		min = cv::Scalar(100, 150, 50);
+		max = cv::Scalar(170, 255, 255);
+	} else if (strcmp(color, "Red") == 0) {
+		min = cv::Scalar(0, 150, 150);
+		max = cv::Scalar(40, 255, 255);
+	} else {
+		return -1;
+	}
+		
+	g_init();
+	/* // >>>> Kalman Filter
 	int stateSize = 6;
 	int measSize = 4;
 	int contrSize = 0;
-	//g_init();
 
 	unsigned int type = CV_32F;
 	cv::KalmanFilter kf(stateSize, measSize, contrSize);
@@ -97,6 +118,7 @@ extern "C" int searchObj(char* color) {
 	// Measures Noise Covariance Matrix R
 	cv::setIdentity(kf.measurementNoiseCov, cv::Scalar(1e-1));
 	// <<<< Kalman Filter
+	*/
 
 	cv::VideoCapture cap(CAMERA_F_IDX);//デバイスのオープン
 
@@ -118,7 +140,7 @@ extern "C" int searchObj(char* color) {
 		double precTick = ticks;
 		ticks = (double)cv::getTickCount();
 		double dT = (ticks - precTick) / cv::getTickFrequency(); //seconds
-
+		/*
 		if (found) {
 			// >>>> Matrix A
 			kf.transitionMatrix.at<float>(2) = dT;
@@ -139,11 +161,11 @@ extern "C" int searchObj(char* color) {
 			cv::Point center;
 			center.x = state.at<float>(0);
 			center.y = state.at<float>(1);
-			cv::circle(res, center, 2, CV_RGB(255, 0, 0), -1);
+		//	cv::circle(res, center, 2, CV_RGB(255, 0, 0), -1);
 
-			cv::rectangle(res, predRect, CV_RGB(255, 0, 0), 2);
+		//	cv::rectangle(res, predRect, CV_RGB(255, 0, 0), 2);
 		}
-
+		*/
 		// >>>>> Noise smoothing
 		cv::Mat blur;
 		cv::GaussianBlur(frame, blur, cv::Size(5, 5), 3.0, 3.0);
@@ -172,8 +194,9 @@ extern "C" int searchObj(char* color) {
 		std::vector<cv::Point> max;
 		std::vector<std::vector<cv::Point> > resultbox;
 		if (contours.size() == 0) {
-		//  g_turn(0, 100);
-
+			sleep(1);
+			g_turn(0, TURN_S);
+			cout << "Not found" << endl;
 		} else {
 			max = contours[0];
 			bBoxmax = cv::boundingRect(max);
@@ -187,14 +210,34 @@ extern "C" int searchObj(char* color) {
 			   }
 			}
 
-			resultbox.push_back(max);
-
-			cv::drawContours(res, resultbox, 0, CV_RGB(0, 255, 0), 1);
-			cv::rectangle(res, bBoxmax, CV_RGB(0, 255, 0), 2);
-
+			int X, Y;
+			X = bBoxmax.x + bBoxmax.width / 2;
+			Y = bBoxmax.y + bBoxmax.height / 2;
+			if (X > 0 && X < 260) {		
+				sleep(1);
+				g_turn(1,TURN_S);
+				cout << "turn left" << endl;
+			} else if (X >340 && X < 640) {
+				sleep(1);
+				g_turn(0, TURN_S);
+				cout << "turn right" << endl;
+			} else if (Y <= 440) {
+				sleep(1);
+				g_go_straight(1, TURN_S);
+				cout << "go straight" << endl;
+			} else if (Y > 440 && X <= 340 && X >= 260){
+				time_t t = time(NULL);
+				cout << "almost there.." << endl;
+	
+				while (time(NULL) - t <= 1) {
+					g_go_straight(1,STRAIGHT_S);
+				}	
+				g_stop();		
+				g_quit();
+				return 0;
+			}
 		}
-
-		// >>>>> Kalman Update
+		/* // >>>>> Kalman Update
 		if (resultbox.size() == 0) {
 		//	X = 1300;
 		//	Y = 800;
@@ -232,18 +275,11 @@ extern "C" int searchObj(char* color) {
 				kf.correct(meas); // Kalman Correction
 			}
 		}
-
-		cv::imshow("Threshold", res);
-
-		int key = cv::waitKey(1);
-		if(key == 113)//qボタンが押されたとき
-		{
-			break;//whileループから抜ける．
-		}
+		*/
+	//	cv::imshow("Threshold", res);
 	}
 
-	cv::destroyAllWindows();
-//	g_quit();
+	g_quit();
 	return 0;
 }
 
@@ -256,7 +292,8 @@ extern "C" int searchUser(int uid) {
 		cerr << "Error opening file \"" << fn_csv << "\". Reason: " << e.msg << endl;
 		return -1;
 	}
-
+	
+	g_init();
 	int im_width = images[0].cols;
 	int im_height = images[0].rows;
 
@@ -272,6 +309,7 @@ extern "C" int searchUser(int uid) {
 		return -1;
 	}
 
+	int notFoundCount = 0, FoundCount = 0;
 	Mat frame;
 	for(;;) {
 		cap >> frame;
@@ -296,24 +334,50 @@ extern "C" int searchUser(int uid) {
 		Mat face_resized;
 		cv::resize(face, face_resized, Size(im_width, im_height), 1.0, 1.0, INTER_CUBIC);
 		int prediction = model->predict(face_resized);
-		rectangle(original, face_i, CV_RGB(0, 255,0), 1);
-		string box_text = format("Prediction = %d", prediction);
+		
+		if (prediction != uid) {
+			notFoundCount++;
+		} else {
+			FoundCount++;
+		}
 
-		int pos_x = std::max(face_i.tl().x - 10, 0);
-		int pos_y = std::max(face_i.tl().y - 10, 0);
-
-		putText(original, box_text, Point(pos_x, pos_y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0,255,0), 2.0);
-
-		// Show the result:
-		imshow("face_recognizer", original);
-		// And display it:
-		char key = (char) waitKey(20);
-		// Exit this loop on escape:
-		if(key == 27)
-			break;
+		if (notFoundCount > NFC) {
+			notFoundCount = 0;
+			FoundCount = 0;
+			g_turn(1, TURN_S);	
+		} else if (FoundCount > FC) {
+			notFoundCount = 0;
+			FoundCount = 0;
+			int X, Y, area;
+			X = face_i.x + face_i.width / 2;
+			Y = face_i.y + face_i.height / 2;
+			area = face_i.width * face_i.height;
+			if (area > AREA_TS) {
+				g_stop();
+				g_quit();
+				return 0;
+			} else if (X > 0 && X < 260) {		
+				sleep(1);
+				g_turn(1,TURN_S);
+				cout << "turn left" << endl;
+			} else if (X >340 && X < 640) {
+				sleep(1);
+				g_turn(0, TURN_S);
+				cout << "turn right" << endl;
+			} else if (X <= 340 && X >= 260){
+				sleep(1);
+				if (area > AREA_SLOW) {
+					g_go_straight(1, STRAIGHT_SLOW);
+				} else {
+					g_go_straight(1, STRAIGHT_S);
+				}
+			}
+		} else {
+		
+		}
+		usleep(20000);
 	}
-	cv::destroyAllWindows();
-	return 0;
+	return -1;
 }
 
 int main(int argh, char* argv[]) {
