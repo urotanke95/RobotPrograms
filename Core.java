@@ -30,6 +30,8 @@ class Core implements ICore {
                 // アプリケーションを終了するフラグが立っている場合
                 stopApp();
                 isWillStopApp = false;
+            } else if(!nowApp_.IsRunning()){
+                stopApp();
             }else{
                 // アプリケーションが動作中
                 nowApp_.Update();
@@ -45,14 +47,17 @@ class Core implements ICore {
         for (JuliusWord jw: jwl) {
             String word = jw.Word_;
             if(word.equals("silE")) return;
-            else if(word.equals("end")) quitCore();
-            else if(word.equals("stop")) isWillStopApp = true;
-            else if(word.equals("test")) startApp(new TestApp());
-            else if(word.equals("move")) startApp(new RobotMoveApp());
-			else if(word.equals("pinkyu")) startApp(new PinkyuApp());
-			else if(word.equals("shoot")) startApp(new ShootApp());
-            else if(word.equals("brightness")) startApp(new BrightnessApp());
-            if(nowApp_!=null)nowApp_.Order(word);
+            if(nowApp_!=null){
+                if(word.equals("stop")) isWillStopApp = true;
+                nowApp_.Order(word);
+            }else{
+                if(word.equals("end")) quitCore();
+                else if(word.equals("test")) startApp(new TestApp());
+                else if(word.equals("move")) startApp(new RobotMoveApp());
+			    else if(word.equals("pinkyu")) startApp(new PinkyuApp());
+			    else if(word.equals("shoot")) startApp(new ShootApp());
+                else if(word.equals("brightness")) startApp(new BrightnessApp());
+            }
     	}
     	return;
     }
