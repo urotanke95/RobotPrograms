@@ -9,7 +9,6 @@ public class GetObjApp implements IApplication {
 
 	void Start() {
 		ArmLib.INSTANCE.init();
-
 	//	AudioLib.INSTANCE.play("");
 	}
     
@@ -24,31 +23,14 @@ public class GetObjApp implements IApplication {
 		if (!running) {
 			running = true;
 			if (status == 1) {
-				int res = ObjLib.INSTANCE.search(target);
-				if (res < 0) {
-				//	AudioLib.INSTANCE.play("Error");
-					status = 0;
-				} else if (res == 0) { //Arrive at object
-					status = 2;	
-				} else {
-					status = 1;
-				}
+				ObjLib.INSTANCE.searchObj(target);
 			} else if (status == 2) {
 				lowtime = ArmLib.INSTANCE.lower();
 				ArmLib.INSTANCE.arm_close();
 				ArmLib.INSTANCE.raise();
-				UserLib.INSTANCE.init();
 				status = 3;
 			} else if (status == 3) {
-				int res = UserLib.INSTANCE.search(MASTER);
-				if (res < 0) {
-				//	AudioLib.INSTANCE.play("Error");
-					status = 0;
-				} else if (res == 0) { //Arrive at user
-					status = 4;	
-				} else {
-					status = 3;
-				}
+				ObjLib.INSTANCE.searchUser(target);
 			 else if (status == 4) {
 				if (lowtime != 0) {
 					ArmLib.INSTANCE.lower_t(lowtime);
@@ -76,7 +58,6 @@ public class GetObjApp implements IApplication {
 		working = true;
 		status = 1;
 		target = word;
-		ObjLib.INSTANCE.init();
 	}
 	
 }

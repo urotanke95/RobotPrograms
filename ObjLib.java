@@ -7,6 +7,7 @@ public interface ObjLib extends Library {
     ObjLib INSTANCE = (ObjLib) Native.loadLibrary(path, ObjLib.class);
 
     // 基本的に正常:0 エラー:-1
-	int search(char *obj);
+	int searchObj(char *obj);
+	int searchUser(int uid);
 	int init();
 }
