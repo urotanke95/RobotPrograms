@@ -57,7 +57,7 @@ extern "C" int main()
 	g_init();
 
 	unsigned int type = CV_32F;
-	cv::KalmanFilter kf(stateSize, measSize, contrSize, type);
+	//cv::KalmanFilter kf(stateSize, measSize, contrSize, type);
 
 	cv::Mat state(stateSize, 1, type);  // [x,y,v_x,v_y,w,h]
 	cv::Mat meas(measSize, 1, type);    // [z_x,z_y,z_w,z_h]
@@ -258,15 +258,18 @@ extern "C" int main()
 		}
 		
 		if (X > 0 && X < 260) {
+			sleep(0.5);
 			g_turn(1,500);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
+			sleep(0.5);
 			g_turn(0, 500);
 			cout << "turn right" << endl;
-		} else if (Y <= 450) {
+		} else if (Y <= 440) {
+			sleep(0.5);
 			g_go_straight(1, 500);
 			cout << "go straight" << endl;
-		} else if (Y > 450 && X <= 340 && X >= 260){
+		} else if (Y > 440 && X <= 340 && X >= 260){
 			time_t t = time(NULL);
 			cout << "almost there.." << endl;
 			while (time(NULL) - t <= 1) {
@@ -277,7 +280,7 @@ extern "C" int main()
 			return 0;
 		}
 		// <<<<< Detection result
-
+		/*
 		// >>>>> Kalman Update
 		if (balls.size() == 0)
 		{
@@ -289,8 +292,8 @@ extern "C" int main()
 			{
 				found = false;
 			}
-			/*else
-			kf.statePost = state;*/
+			else
+			kf.statePost = state;
 		}
 		else
 		{
@@ -325,10 +328,11 @@ extern "C" int main()
 
 								  //cout << "Measure matrix:" << endl << meas << endl;
 		}
+		*/
 		// <<<<< Kalman Update
 
 		// Final result
-		//cv::imshow("Tracking", res);
+		cv::imshow("Tracking", res);
 
 		// User key
 		ch = cv::waitKey(1);
