@@ -328,7 +328,7 @@ extern "C" int main()
 		// <<<<< Kalman Update
 
 		// Final result
-		//cv::imshow("Tracking", res);
+		cv::imshow("Tracking", res);
 
 		// User key
 		ch = cv::waitKey(1);
