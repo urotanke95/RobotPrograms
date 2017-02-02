@@ -57,7 +57,7 @@ extern "C" int main()
 	g_init();
 
 	unsigned int type = CV_32F;
-	//cv::KalmanFilter kf(stateSize, measSize, contrSize, type);
+	/*cv::KalmanFilter kf(stateSize, measSize, contrSize, type);
 
 	cv::Mat state(stateSize, 1, type);  // [x,y,v_x,v_y,w,h]
 	cv::Mat meas(measSize, 1, type);    // [z_x,z_y,z_w,z_h]
@@ -102,6 +102,7 @@ extern "C" int main()
 
 	// Measures Noise Covariance Matrix R
 	cv::setIdentity(kf.measurementNoiseCov, cv::Scalar(1e-1));
+	*/
 	// <<<< Kalman Filter
 
 	// Camera Index
@@ -143,7 +144,7 @@ extern "C" int main()
 
 		cv::Mat res;
 		frame.copyTo(res);
-
+		/*
 		if (found)
 		{
 			// >>>> Matrix A
@@ -169,7 +170,7 @@ extern "C" int main()
 
 			cv::rectangle(res, predRect, CV_RGB(255, 0, 0), 2);
 		}
-
+		*/
 		// >>>>> Noise smoothing
 		cv::Mat blur;
 		cv::GaussianBlur(frame, blur, cv::Size(5, 5), 3.0, 3.0);
