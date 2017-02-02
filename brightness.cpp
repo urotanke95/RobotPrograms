@@ -59,7 +59,7 @@ extern "C" int get_vec_y(){
     // 座標系の関係で順番が逆
     return window_y_max - target_y;
 }
-void main(){
+int main(){
     start_brightness();
     while(1){
         update_brightness();
