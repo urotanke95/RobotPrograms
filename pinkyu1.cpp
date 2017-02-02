@@ -37,15 +37,15 @@ extern "C"{
 int X = 1300;
 int Y = 800;
 
-int getX() {
+extern "C" int getX() {
 	return X;
 }
 
-int getY() {
+extern "C" int getY() {
 	return Y;
 }
 
-int main()
+extern "C" int main()
 {
 	// Camera frame
 	cv::Mat frame;
