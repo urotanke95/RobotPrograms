@@ -10,4 +10,6 @@ interface IApplication {
     //アプリケーションの動作中juliusからwordが入ってくる．
     //wordはjulius側で定義する(ex.入力「こんにちは」word=hello)
     void Order(String word);
+    //アプリケーション側はここをfalseにすると自発的に終われる
+    boolean IsRunning();
 }
