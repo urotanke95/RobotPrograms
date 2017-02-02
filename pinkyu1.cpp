@@ -258,15 +258,15 @@ extern "C" int main()
 		}
 		
 		if (X > 0 && X < 260) {
-			sleep(0.5);
+			sleep(1);
 			g_turn(1,500);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
-			sleep(0.5);
+			sleep(1);
 			g_turn(0, 500);
 			cout << "turn right" << endl;
 		} else if (Y <= 440) {
-			sleep(0.5);
+			sleep(1);
 			g_go_straight(1, 500);
 			cout << "go straight" << endl;
 		} else if (Y > 440 && X <= 340 && X >= 260){
