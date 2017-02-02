@@ -5,11 +5,11 @@ class BrightnessLibTester {
         System.out.println("BrightnessLibTester");
         BrightnessLib brightnessLib = BrightnessLib.INSTANCE;
 
-        brightnessLib.start_brightness();
+        BrightnessLib.INSTANCE.start_brightness();
         while(true){
-            brightnessLib.update_brightness();
-            int x = brightnessLib.get_vec_x();
-            int y = brightnessLib.get_vec_y();
+            BrightnessLib.INSTANCE.update_brightness();
+            int x = BrightnessLib.INSTANCE.get_vec_x();
+            int y = BrightnessLib.INSTANCE.get_vec_y();
             System.out.println("x = " + x + ", y = "+ y);
             // try{
             //     Thread.sleep(1000);

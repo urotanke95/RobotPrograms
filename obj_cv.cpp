@@ -1,10 +1,9 @@
-#include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/video/video.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/video/tracking.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/face.hpp>
-#include <opencv2/objdetect.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -15,7 +14,6 @@
 #define DEBUG 1
 
 using namespace cv;
-using namespace cv::face;
 using namespace std;
 
 double ticks = 0;
@@ -217,7 +215,7 @@ void quit() {
 int main(int argh, char* argv[]) {
 	init();
 	while(1) {
-		search("Green");
+		search(argv[1]);
 		int key = cv::waitKey(1);
 		if (key == 113) {
 			break;

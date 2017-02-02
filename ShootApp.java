@@ -1,7 +1,7 @@
 public class ShootApp implements IApplication {
 
 	public void Start() {
-	//	AudioLib.INSTANCE.play("Hassha.wav");
+		AudioLib.INSTANCE.play("Hassha.wav");
 	}
 
 	public void Quit() {

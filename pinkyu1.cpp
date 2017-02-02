@@ -28,6 +28,7 @@
 
 
 using namespace std;
+extern "C"{
 
 // >>>>> Color to be tracked
 #define MIN_H_BLUE 30
@@ -336,4 +337,5 @@ int main()
 	g_quit();
 	
 	return EXIT_SUCCESS;
+}
 }

@@ -17,8 +17,8 @@
 #define TERM_PR 10
 
 int main(int argc, char **argv){
-    int a2dVal = 0, count = 0;
-    unsigned char data[3];
+  int a2dVal = 0, count = 0;
+  unsigned char data[3];
 	struct timeval start, end;
 
     if (wiringPiSPISetup(SPI_CHANNEL, 1000000) < 0) {
@@ -38,7 +38,7 @@ int main(int argc, char **argv){
 	digitalWrite(MOTOR_OUT1, 0);
 	digitalWrite(MOTOR_OUT2, 0);
 
-	digitalWrite(MOTOR_OUT1, 1);
+	digitalWrite(MOTOR_OUT2, 1);
     gettimeofday(&start, NULL);
 	while(1) {
         data[0] = 0b00000110;  
@@ -46,12 +46,11 @@ int main(int argc, char **argv){
         data[2] = 0;
 
 		digitalWrite(SS_PORT, 0);
-        retCode=wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
+        wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
 
         a2dVal = (data[1]<< 8) & 0b111100000000; //first 4 bit
         a2dVal |=  (data[2] & 0xff);
-        a2dVol = (float)a2dVal/4095 * Vref;
 		
 		if (a2dVal > THRESHOLD_PR) {
 			count++;

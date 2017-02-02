@@ -13,6 +13,8 @@ int quit_brightness = 0;
 Mat brightness;
 VideoCapture cap(0); // デフォルトカメラをオープン
 
+
+
 int start_brightness()
 {
     if(!cap.isOpened())  // 成功したかどうかをチェック
@@ -54,4 +56,11 @@ int get_vec_x(){
 int get_vec_y(){
     // 座標系の関係で順番が逆
     return window_y_max - target_y;
+}
+int main(){
+	start_brightness();
+	while(1){
+		update_brightness();
+	}
+	return 0;
 }

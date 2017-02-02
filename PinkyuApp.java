@@ -1,13 +1,12 @@
 public class PinkyuApp implements IApplication {
 	int x,y;
-	PinkyuTester pinkyu1;
+	PinkyuTester pinkyu1 = PinkyuTester.INSTANCE;
 	public void Start() {
-		pinkyu1 = new PinkyuTester();
 		//AudioLib.INSTANCE.play("ZensokuZensin.wav");
-		pinkyu1.main(null);
-	  SurvoLib.INSTANCE.openArm();	
+		pinkyu1.main();
+	  //SurvoLib.INSTANCE.openArm();	
 		//ArmLib.INSTANCE.lower();
- 		SurvoLib.INSTANCE.closeArm();
+ 		//SurvoLib.INSTANCE.closeArm();
  		//ArmLib.INSTANCE.raise();
  }
 	public void Quit()  {
@@ -25,7 +24,7 @@ public class PinkyuApp implements IApplication {
 
 	public void Order(String word) {
 		if (word.equals("pick")) {
-			SurvoLib.INSTANCE.closeArm();
+			//SurvoLib.INSTANCE.closeArm();
 		}
 
 	}
