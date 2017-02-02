@@ -5,6 +5,7 @@
 #include <wiringPiSPI.h>
 #include <string.h>
 #include <unistd.h>
+#define SPI_CHANNEL 0
 
 #define SURVO_OUT 12
 #define MOTOR_OUT1 14
@@ -14,7 +15,7 @@
 #define PR_D_CHANNEL 1
 #define PS_CHANNEL 2
 
-#define SLEEP 10000
+#define SLEEP 1000000
 
 #define THRESHOLD_PR 1500
 #define RANGE_PR 50
@@ -36,14 +37,15 @@ int arm_open(){ //Arm open completely. When error, return -1
 	pwmWrite(SURVO_OUT, 125);
 	int count = 0;
 	while(1) {
-        data[0] = 0b00000110;
-        data[1] = 0b00000000 | ((PS_CHANNEL & 0x03) << 6);
+    data[0] = 0b00000110;
+    data[1] = 0b00000000 | ((PS_CHANNEL & 0x03) << 6);
 		data[2] = 0;
 		digitalWrite(SS_PORT, 0);
 		wiringPiSPIDataRW (SPI_CHANNEL,data,sizeof(data));
 		digitalWrite(SS_PORT, 1);
-        a2dVal = (data[1]<< 8) & 0b111100000000;
-        a2dVal |=  (data[2] & 0xff);
+    a2dVal = (data[1]<< 8) & 0b111100000000;
+    a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > OPEN_TRS) {
 			count++;
 			if (count > TERM_PS) {
@@ -77,6 +79,7 @@ int arm_close(){ //Arm catch or close. When error, return -1
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > CLOSE_TRS) { //Close limit over
 			over++;
 			if (over > TERM_PS) {
@@ -119,6 +122,7 @@ int arm_fclose(){ //Arm catch or close. When error, return -1
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > CLOSE_TRS) { //Close limit over
 			over++;
 			if (over > TERM_PS) {
@@ -154,6 +158,7 @@ int raise(){ //Lift rises. When error, return -1
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > THRESHOLD_PR) {
 			count++;
 			if (count > TERM_PR) {
@@ -192,6 +197,7 @@ int lower(){ //Lift get down. When error, return -1
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > THRESHOLD_PR) {
 			count++;
 			if (count > TERM_PR) {
@@ -244,6 +250,7 @@ int lower_t(int clock){ //Lift get down. When error, return -1
 		digitalWrite(SS_PORT, 1);
         a2dVal = (data[1]<< 8) & 0b111100000000;
         a2dVal |=  (data[2] & 0xff);
+		printf("%d\n", a2dVal);
 		if (a2dVal > THRESHOLD_PR) {
 			count++;
 			if (count > TERM_PR) {

@@ -21,10 +21,10 @@ using namespace cv;
 using namespace cv::face;
 using namespace std;
 
-string fn_haar = "/usr/local/Cellar/opencv3/3.2.0/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml";
-string fn_csv = "/Users/okuokakouhei/java/eclipse/RobotCV/face.csv";
+string fn_haar = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml";
+string fn_csv = "/home/pi/work/robot/RobotPrograms/resources/face.csv";
 
-extern "C" static void read_csv(const string& filename, vector<Mat>& images, vector<int>& labels, char separator = ';') {
+extern "C" void read_csv(const string& filename, vector<Mat>& images, vector<int>& labels, char separator = ';') {
     std::ifstream file(filename.c_str(), ifstream::in);
     if (!file) {
         string error_message = "No valid input file was given, please check the given filename.";

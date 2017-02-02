@@ -6,18 +6,18 @@ public class Avoid {
 	static int pass = 0;
 	final static int straight = 500;
 
-	class Ret extends TimerTask {
+	static class Ret extends TimerTask {
 		public void run() {
 			return;
 		}
 	}
 
-	class Start extends TimerTask {
+	static class Start extends TimerTask {
 		public void run() {
 			pass++;
 			left_spin = pass * straight / 1000;
 			right_spin = pass * straight / 1000;
-			Robot.Move(Robot.FB.Front, pass * straight / 1000);
+			Robot.Move(FB.Front, pass * straight / 1000);
 		}
 	}
 
@@ -27,45 +27,32 @@ public class Avoid {
 		Timer ret_timer = new Timer();
 		Timer start_timer = new Timer();
 
+			first_left = Robot.GetLeft();
+			first_right = Robot.GetRight();
 		do {
-		first_left = Robot.LeftWheel;
-		first_right = Robot.RightWheel;
+			left_sensor = CollisionSensor.GetLeft();
+			right_sensor = CollisionSensor.GetRight();
 
-		left_sensor = Collision.Left;
-		right_sensor = Collision.Right;
+			if (left_sensor < right_sensor) {
+				left_sensor = CollisionSensor.GetLeft();
+				right_sensor = CollisionSensor.GetRight();
 
-		if (left_sensor < right_sensor) {
-			left_sensor = Collision.Left;
-			right_sensor = Collision.Right;
-
-			//left_spin = (left_sensor - BOTTOM) / (TOP - BOTTOM) * first_left;
-			//right_spin = (left_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right;
-
-			SetLeftWheel((left_sensor - BOTTOM) / (TOP - BOTTOM) * first_left);
-			SetRightWheel((left_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right);
-		} else {
-			left_sensor = Robot.LeftWheel;
-			right_sensor = Robot.RightWheel;
-
-			//right_spin = (right_sensor - BOTTOM) / (TOP - BOTTOM) * first_left;
-			//left_spin = (right_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right;
-
-			SetLeftWheel((right_sensor - BOTTOM) / (TOP - BOTTOM) * first_left);
-			SetRightWheel((right_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right);
-		}
-
-
+				Robot.SetLeft((left_sensor - BOTTOM) / (TOP - BOTTOM) * first_left);
+				Robot.SetRight((left_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right);
+			} else {
+				left_sensor = CollisionSensor.GetLeft();
+				right_sensor = CollisionSensor.GetRight();
+	
+				Robot.SetLeft((right_sensor - BOTTOM) / (TOP - BOTTOM) * first_left);
+				Robot.SetRight((right_sensor - (TOP - BOTTOM) / 2) / (TOP - (TOP - BOTTOM) / 2) * first_right);
+			}
 		} while(left_sensor < THR || right_sensor < THR);
-
 
 		if (left_sensor >= THR && right_sensor >= THR) {
 			// if < THR, interupt
 			ret_timer.schedule(new Ret(), (long) (2.0 * 1000));
 			start_timer.schedule(new Start(), (long)0.0, (long)1.0);
-			while (left_sensor >= THR && right_sensor >= THR) {
-			}
+			while (left_sensor >= THR && right_sensor >= THR) {}
 		}
-
-		// search destination
 	}
 }
