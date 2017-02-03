@@ -4,11 +4,11 @@ public class PinkyuApp implements IApplication {
 	public void Start() {
 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
 		pinkyu1.main();
-	  SurvoLib.INSTANCE.openArm();	
-		//ArmLib.INSTANCE.lower();
- 		SurvoLib.INSTANCE.closeArm();
- 		//ArmLib.INSTANCE.raise();
- }
+		ArmLib.INSTANCE.lower();
+		ArmLib.INSTANCE.arm_open();
+		ArmLib.INSTANCE.arm_close();
+ 		ArmLib.INSTANCE.raise();
+	}
 	public void Quit()  {
 		AudioLib.INSTANCE.play("MutekiSaikyo.wav");
 		pinkyu1 = null;
