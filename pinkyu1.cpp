@@ -257,21 +257,25 @@ extern "C" int main()
 				Y = center.y;
 			}
 		}
-		
+		int speedx = (320 - X) * 2;
+		int speedy = (480 - Y) * 2;
 		if (X > 0 && X < 260) {
-			g_turn(1, (320 - X) * 2);
+			if (speedx < 50) speedx = 50;
+			g_turn(1, speedx);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
-			g_turn(0, (320 - X) * 2);
+			if (speedx < 50) speedx = 50;
+			g_turn(0, speedx);
 			cout << "turn right" << endl;
 		} else if (Y <= 440) {
-			g_go_straight(1, (480 - Y) * 2);
+			if (speedy < 50) speedy = 50;
+			g_go_straight(1, speedy);
 			cout << "go straight" << endl;
 		} else if (Y > 440 && X <= 340 && X >= 260){
 			time_t t = time(NULL);
 			cout << "almost there.." << endl;
 			while (time(NULL) - t <= 1) {
-				g_go_straight(1, (480 - Y) * 2);
+				g_go_straight(1, 50);
 			}
 			g_stop();
 			g_quit();
