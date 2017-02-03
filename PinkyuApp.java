@@ -1,9 +1,10 @@
 public class PinkyuApp implements IApplication {
 	int x,y;
 	PinkyuTester pinkyu1 = PinkyuTester.INSTANCE;
-	public void Start() {
-		AudioLib.INSTANCE.play("ZensokuZensin.wav");
-		pinkyu1.main();
+ 	public void Start() {
+ 		AudioLib.INSTANCE.play("ZensokuZensin.wav");
+ 		pinkyu1.main();
+		ArmLib.INSTANCE.init();
 		ArmLib.INSTANCE.lower();
 		ArmLib.INSTANCE.arm_open();
 		ArmLib.INSTANCE.arm_close();
