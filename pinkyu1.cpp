@@ -259,22 +259,19 @@ extern "C" int main()
 		}
 		
 		if (X > 0 && X < 260) {
-			sleep(1);
-			g_turn(1,500);
+			g_turn(1, (320 - X) * 2);
 			cout << "turn left" << endl;
 		} else if (X >340 && X < 640) {
-			sleep(1);
-			g_turn(0, 500);
+			g_turn(0, (320 - X) * 2);
 			cout << "turn right" << endl;
 		} else if (Y <= 440) {
-			sleep(1);
-			g_go_straight(1, 500);
+			g_go_straight(1, (480 - Y) * 2);
 			cout << "go straight" << endl;
 		} else if (Y > 440 && X <= 340 && X >= 260){
 			time_t t = time(NULL);
 			cout << "almost there.." << endl;
 			while (time(NULL) - t <= 1) {
-				g_go_straight(1,500);
+				g_go_straight(1, (480 - Y) * 2);
 			}
 			g_stop();
 			g_quit();
